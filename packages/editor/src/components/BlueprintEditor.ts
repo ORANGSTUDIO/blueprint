@@ -1,5 +1,6 @@
+import { Graph } from '@blueprint/graph'
 import { LitElement, css, html } from 'lit'
-import { customElement, property } from 'lit/decorators.js'
+import { customElement, property, query } from 'lit/decorators.js'
 
 /**
  * An example element.
@@ -9,6 +10,8 @@ import { customElement, property } from 'lit/decorators.js'
  */
 @customElement('blueprint-editor')
 export class BlueprintEditor extends LitElement {
+  @query('.blueprint-graph-container')
+  container: HTMLElement | undefined;
   /**
    * Copy for the read the docs hint.
    */
@@ -28,9 +31,17 @@ export class BlueprintEditor extends LitElement {
         <button @click=${this._onClick} part="button">
           count is ${this.count}
         </button>
+        <div class="blueprint-graph-container"></div>
       </div>
       <p class="read-the-docs">${this.docsHint}</p>
     `
+  }
+
+  protected firstUpdated() {
+    if (!this.container) {
+      return
+    }
+    new Graph({ container: this.container })
   }
 
   private _onClick() {
@@ -43,6 +54,11 @@ export class BlueprintEditor extends LitElement {
       margin: 0 auto;
       padding: 2rem;
       text-align: center;
+    }
+
+    .blueprint-graph-container {
+      width: 500px;
+      height: 500px;
     }
 
     .logo {
