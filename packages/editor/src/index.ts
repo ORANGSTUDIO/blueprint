@@ -1,1 +1,1 @@
-import './components/blueprint-editor'
+import './components/BlueprintEditor'
