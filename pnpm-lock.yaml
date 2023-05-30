@@ -13,6 +13,9 @@ importers:
 
   apps/lit:
     dependencies:
+      '@blueprint/editor':
+        specifier: workspace:*
+        version: link:../../packages/editor
       lit:
         specifier: ^2.7.2
         version: 2.7.2
@@ -26,6 +29,9 @@ importers:
 
   apps/vue:
     dependencies:
+      '@blueprint/editor':
+        specifier: workspace:*
+        version: link:../../packages/editor
       vue:
         specifier: ^3.2.47
         version: 3.2.47
@@ -42,6 +48,12 @@ importers:
       vue-tsc:
         specifier: ^1.4.2
         version: 1.4.2(typescript@5.0.4)
+
+  packages/editor:
+    dependencies:
+      lit:
+        specifier: ^2.7.2
+        version: 2.7.2
 
   packages/graph:
     dependencies:
