@@ -3,9 +3,9 @@ import { IG6, IIGroup, IModelConfig, INodeConfig, IShapeOptions } from '../../in
 import { BlockNames_DTS } from '../../interfaces/service';
 import anchorEvent from '../../behaviors/anchor-event';
 import itemEvents from '../../behaviors/item-event';
-import defaultStyles from '../defaultStyles';
+import { DEFAULT_STYLES } from '../../consts/';
 
-const { nodeStyles, anchorPointStyles } = defaultStyles;
+const { nodeStyles, anchorPointStyles } = DEFAULT_STYLES;
 
 function getStyle(options: any, cfg: any): ShapeStyle {
   return {

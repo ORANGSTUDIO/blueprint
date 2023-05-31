@@ -1,11 +1,10 @@
-import G6, { EdgeConfig, Graph as G6Graph, IG6GraphEvent, INode, Item, ShapeStyle, StateStyles, UpdateType } from "@antv/g6";
+import G6, { EdgeConfig, Graph as G6Graph, GraphData, IG6GraphEvent, INode, Item, ShapeStyle, StateStyles, UpdateType } from "@antv/g6";
 import { GraphEventMap, GraphOptions, INodeConfig, AnchorTag, AddEdgeOptions } from "./interfaces";
 import _ from 'lodash';
 import registerFactory from "./register-factory";
-import defaultStyles from "./shapes/defaultStyles";
 import { AnchorBaseConfig_DTS, AnchorTag_DTS, ConstOrVariable_DTS } from './interfaces/service';
 import getImgByType from "./utils/getImgByType";
-import { LOGIC_STATEMENT_EDGE, LOGIC_VARIABLE_EDGE } from "./consts";
+import { DEFAULT_STYLES, LOGIC_STATEMENT_EDGE, LOGIC_VARIABLE_EDGE } from "./consts";
 import { getEgdeStyle } from "./utils/getEgdeStyle";
 import { SchemaType } from "./interfaces/schema";
 import Action from "./Action";
@@ -20,7 +19,7 @@ export default class Graph {
 
   constructor(options: GraphOptions) {
     this.graph = this.initGraph(options);
-    this.initActions()
+    this.initActions();
   }
 
   private initActions() {
@@ -31,6 +30,16 @@ export default class Graph {
     this.actions.forEach(action => {
       G6.registerBehavior(action.name, action.behaviorOption())
     })
+  }
+
+  /**
+   * 更新图数据
+   * @param data 绘图数据
+   */
+  public updateGraphData(graphData: GraphData) {
+    this.graph.clear();
+    this.graph.data(graphData);
+    this.graph.render();
   }
 
   /**
@@ -152,7 +161,7 @@ export default class Graph {
 
     Graph.commonNodes.forEach((i) => i(G6));
 
-    const { nodeStateStyles } = defaultStyles;
+    const { nodeStateStyles } = DEFAULT_STYLES;
 
     const mergedOptions: GraphOptions = _.merge(
       {},

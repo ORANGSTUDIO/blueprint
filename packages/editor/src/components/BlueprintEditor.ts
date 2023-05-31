@@ -41,7 +41,413 @@ export class BlueprintEditor extends LitElement {
     if (!this.container) {
       return
     }
-    new Graph({ container: this.container })
+    const graph = new Graph({ container: this.container })
+    graph.updateGraphData({
+      "nodes": [
+          {
+              "id": "logic-start-node",
+              "x": 175,
+              "y": 284,
+              "type": "logic-start-node",
+              "label": {
+                  "en_us": "Start",
+                  "zh_cn": "开始"
+              },
+              "data": {
+                  "label": {
+                      "en_us": "Start",
+                      "zh_cn": "开始"
+                  },
+                  "anchors": [
+                      {
+                          "nodeId": "logic-start-node",
+                          "tag": "statement_output",
+                          "index": 0,
+                          "connected": false,
+                          "data": {
+                              "label": {
+                                  "zh_cn": "开始",
+                                  "en_us": "Start"
+                              },
+                              "name": "output"
+                          }
+                      }
+                  ]
+              },
+              "style": {
+                  "nodeState:default": {
+                      "cursor": "default",
+                      "stroke": "#d9d9d9",
+                      "lineWidth": 1,
+                      "shadowColor": null
+                  },
+                  "nodeState:hover": {
+                      "lineWidth": 1,
+                      "stroke": "#d9d9d9",
+                      "shadowColor": "#d9d9d9"
+                  },
+                  "nodeState:selected": {
+                      "lineWidth": 2,
+                      "stroke": "#1890ff",
+                      "shadowColor": null
+                  },
+                  "nodeState:matched": {
+                      "lineWidth": 2,
+                      "stroke": "#1890ff",
+                      "shadowColor": null
+                  }
+              },
+              "nodeWidth": 210,
+              "nodeHeight": 134
+          },
+          {
+              "type": "logic-end-node",
+              "id": "logic-end-node",
+              "x": 740,
+              "y": 284,
+              "label": {
+                  "en_us": "End",
+                  "zh_cn": "结束"
+              },
+              "data": {
+                  "label": {
+                      "en_us": "End",
+                      "zh_cn": "结束"
+                  },
+                  "anchors": [
+                      {
+                          "tag": "statement_input",
+                          "index": 0,
+                          "nodeId": "logic-end-node",
+                          "connected": false,
+                          "data": {
+                              "_isEntry": true,
+                              "label": {
+                                  "zh_cn": "结束",
+                                  "en_us": "End"
+                              }
+                          }
+                      },
+                      {
+                          "nodeId": "logic-end-node",
+                          "tag": "var_input",
+                          "index": 1,
+                          "connected": false,
+                          "data": {
+                              "tag": "var_input",
+                              "type": "integer",
+                              "label": {
+                                  "zh_cn": "返回值",
+                                  "en_us": "Return value"
+                              },
+                              "name": "return_value",
+                              "schema": {
+                                  "type": "integer"
+                              }
+                          }
+                      }
+                  ]
+              },
+              "style": {
+                  "nodeState:default": {
+                      "cursor": "default",
+                      "stroke": "#d9d9d9",
+                      "lineWidth": 1,
+                      "shadowColor": null
+                  },
+                  "nodeState:hover": {
+                      "lineWidth": 1,
+                      "stroke": "#d9d9d9",
+                      "shadowColor": "#d9d9d9"
+                  },
+                  "nodeState:selected": {
+                      "lineWidth": 2,
+                      "stroke": "#1890ff",
+                      "shadowColor": null
+                  },
+                  "nodeState:matched": {
+                      "lineWidth": 2,
+                      "stroke": "#1890ff",
+                      "shadowColor": null
+                  }
+              },
+              "nodeWidth": 210,
+              "nodeHeight": 134
+          },
+          {
+              "id": "1684981368175660",
+              "x": 270.796875,
+              "y": 459,
+              "type": "logic-string-node",
+              "data": {
+                  "varId": "30ebcf14cc204376bc19e34913dbc87e",
+                  "varName": "morenzifuchuan",
+                  "varLabel": "默认字符串",
+                  "schema": {
+                      "type": "string"
+                  },
+                  "anchors": [
+                      {
+                          "nodeId": "16849813662049865",
+                          "tag": "var_output",
+                          "index": 0,
+                          "data": {
+                              "label": "默认字符串",
+                              "value": "",
+                              "type": "string",
+                              "name": "morenzifuchuan",
+                              "_route_path": "30ebcf14cc204376bc19e34913dbc87e",
+                              "schema": {
+                                  "type": "string"
+                              }
+                          },
+                          "connected": true
+                      }
+                  ]
+              },
+              "style": {
+                  "nodeState:default": {
+                      "cursor": "default",
+                      "stroke": "#d9d9d9",
+                      "lineWidth": 1,
+                      "shadowColor": null
+                  },
+                  "nodeState:hover": {
+                      "lineWidth": 1,
+                      "stroke": "#d9d9d9",
+                      "shadowColor": "#d9d9d9"
+                  },
+                  "nodeState:selected": {
+                      "lineWidth": 2,
+                      "stroke": "#1890ff",
+                      "shadowColor": null
+                  },
+                  "nodeState:matched": {
+                      "lineWidth": 2,
+                      "stroke": "#1890ff",
+                      "shadowColor": null
+                  }
+              },
+              "nodeHeight": 40,
+              "nodeWidth": 150
+          }
+      ],
+      "edges": [
+          {
+              "type": "logic-statement-edge",
+              "id": "16838001913853279",
+              "source": "logic-start-node",
+              "target": "logic-end-node",
+              "sourceAnchor": 0,
+              "targetAnchor": 0,
+              "style": {
+                  "edgeState:default": {
+                      "radius": 6,
+                      "offset": -15,
+                      "lineWidth": 3,
+                      "stroke": "#1890FF",
+                      "lineAppendWidth": 10,
+                      "endArrow": null
+                  },
+                  "edgeState:selected": {
+                      "radius": 6,
+                      "offset": -15,
+                      "lineWidth": 3,
+                      "stroke": "#1890FF",
+                      "lineAppendWidth": 10,
+                      "endArrow": null
+                  },
+                  "edgeState:hover": {
+                      "radius": 6,
+                      "offset": -15,
+                      "lineWidth": 3,
+                      "stroke": "#1890FF",
+                      "lineAppendWidth": 10,
+                      "endArrow": null
+                  },
+                  "radius": 6,
+                  "offset": -15,
+                  "lineWidth": 3,
+                  "stroke": "#1890FF",
+                  "lineAppendWidth": 10,
+                  "endArrow": null
+              },
+              "stateStyles": {
+                  "edgeState:default": {
+                      "radius": 6,
+                      "offset": -15,
+                      "lineWidth": 3,
+                      "stroke": "#1890FF",
+                      "lineAppendWidth": 10,
+                      "endArrow": null
+                  },
+                  "edgeState:selected": {
+                      "radius": 6,
+                      "offset": -15,
+                      "lineWidth": 3,
+                      "stroke": "#1890FF",
+                      "lineAppendWidth": 10,
+                      "endArrow": null
+                  },
+                  "edgeState:hover": {
+                      "radius": 6,
+                      "offset": -15,
+                      "lineWidth": 3,
+                      "stroke": "#1890FF",
+                      "lineAppendWidth": 10,
+                      "endArrow": null
+                  }
+              },
+              "startPoint": {
+                  "x": 280.5,
+                  "y": 291.05223880597015,
+                  "anchorIndex": 0
+              },
+              "endPoint": {
+                  "x": 634.5,
+                  "y": 291.05223880597015,
+                  "anchorIndex": 0
+              }
+          },
+          {
+              "type": "logic-variable-edge",
+              "id": "16849813722697492",
+              "source": "1684981368175660",
+              "target": "logic-end-node",
+              "sourceAnchor": 0,
+              "targetAnchor": 1,
+              "style": {
+                  "edgeState:default": {
+                      "radius": 6,
+                      "offset": -15,
+                      "lineWidth": 2,
+                      "stroke": "#52C41A",
+                      "lineAppendWidth": 10,
+                      "endArrow": {
+                          "lineDash": [
+                              0
+                          ],
+                          "path": "M 0,0 L 8,4 L 7,0 L 8,-4 Z",
+                          "d": 0,
+                          "fill": "#52C41A",
+                          "stroke": "#52C41A"
+                      }
+                  },
+                  "edgeState:selected": {
+                      "radius": 6,
+                      "offset": -15,
+                      "lineWidth": 2,
+                      "stroke": "#52C41A",
+                      "lineAppendWidth": 10,
+                      "endArrow": {
+                          "lineDash": [
+                              0
+                          ],
+                          "path": "M 0,0 L 8,4 L 7,0 L 8,-4 Z",
+                          "d": 0,
+                          "fill": "#52C41A",
+                          "stroke": "#52C41A"
+                      }
+                  },
+                  "edgeState:hover": {
+                      "radius": 6,
+                      "offset": -15,
+                      "lineWidth": 2,
+                      "stroke": "#52C41A",
+                      "lineAppendWidth": 10,
+                      "endArrow": {
+                          "lineDash": [
+                              0
+                          ],
+                          "path": "M 0,0 L 8,4 L 7,0 L 8,-4 Z",
+                          "d": 0,
+                          "fill": "#52C41A",
+                          "stroke": "#52C41A"
+                      }
+                  },
+                  "radius": 6,
+                  "offset": -15,
+                  "lineWidth": 2,
+                  "stroke": "#52C41A",
+                  "lineAppendWidth": 10,
+                  "endArrow": {
+                      "lineDash": [
+                          0
+                      ],
+                      "path": "M 0,0 L 8,4 L 7,0 L 8,-4 Z",
+                      "d": 0,
+                      "fill": "#52C41A",
+                      "stroke": "#52C41A"
+                  }
+              },
+              "stateStyles": {
+                  "edgeState:default": {
+                      "radius": 6,
+                      "offset": -15,
+                      "lineWidth": 2,
+                      "stroke": "#52C41A",
+                      "lineAppendWidth": 10,
+                      "endArrow": {
+                          "lineDash": [
+                              0
+                          ],
+                          "path": "M 0,0 L 8,4 L 7,0 L 8,-4 Z",
+                          "d": 0,
+                          "fill": "#52C41A",
+                          "stroke": "#52C41A"
+                      }
+                  },
+                  "edgeState:selected": {
+                      "radius": 6,
+                      "offset": -15,
+                      "lineWidth": 2,
+                      "stroke": "#52C41A",
+                      "lineAppendWidth": 10,
+                      "endArrow": {
+                          "lineDash": [
+                              0
+                          ],
+                          "path": "M 0,0 L 8,4 L 7,0 L 8,-4 Z",
+                          "d": 0,
+                          "fill": "#52C41A",
+                          "stroke": "#52C41A"
+                      }
+                  },
+                  "edgeState:hover": {
+                      "radius": 6,
+                      "offset": -15,
+                      "lineWidth": 2,
+                      "stroke": "#52C41A",
+                      "lineAppendWidth": 10,
+                      "endArrow": {
+                          "lineDash": [
+                              0
+                          ],
+                          "path": "M 0,0 L 8,4 L 7,0 L 8,-4 Z",
+                          "d": 0,
+                          "fill": "#52C41A",
+                          "stroke": "#52C41A"
+                      }
+                  }
+              },
+              "data": {
+                  "varType": "string",
+                  "coercive": true
+              },
+              "startPoint": {
+                  "x": 346.296875,
+                  "y": 459,
+                  "anchorIndex": 0
+              },
+              "endPoint": {
+                  "x": 634.5,
+                  "y": 321.27611940298505,
+                  "anchorIndex": 1
+              }
+          }
+      ],
+      "combos": []
+  })
   }
 
   private _onClick() {
