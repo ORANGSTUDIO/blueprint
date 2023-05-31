@@ -217,10 +217,13 @@ export default class Graph {
     }
 
     // 更新锚点的index，删除被删除锚点的线
+    const result: {
+      [index: number]: number
+    } = {}
     const indexMap: any = cfg.data.anchors.reduce((result, anchor) => {
       result[anchor.index] = 1;
       return result;
-    }, {});
+    }, result);
     node.getInEdges().forEach((edge) => {
       const targetAnchorIndex = edge.getModel().targetAnchor as number;
       if (!indexMap[targetAnchorIndex]) {
@@ -253,7 +256,7 @@ export default class Graph {
     item.attr({ ...attrs, ...model.style });
     // 锚点被链接后需要变成实心
     const children = group.get('children');
-    const anchorImgs = children.filter((item: Item) =>
+    const anchorImgs: Item[] = children.filter((item: Item) =>
       [AnchorTag.STATEMENT_OUTPUT, AnchorTag.STATEMENT_INPUT, AnchorTag.VAR_INPUT, AnchorTag.VAR_OUTPUT].includes(
         item.get('anchorTag'),
       ),
@@ -283,7 +286,7 @@ export default class Graph {
       }
     });
 
-    const badges = children.filter((item: Item) => item.get('name') === 'badge');
+    const badges: Item[] = children.filter((item: Item) => item.get('name') === 'badge');
     badges.forEach((badge) => {
       const anchorIndex = badge.get('anchorIndex');
       if (cfg.data.anchors[anchorIndex]) {
