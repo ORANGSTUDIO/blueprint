@@ -1,4 +1,4 @@
-import G6, { IGroup, INode, Item, ModelConfig, UpdateType, NodeConfig, IShape, IG6GraphEvent } from '@antv/g6';
+import G6, { IGroup, INode, Item, ModelConfig, UpdateType, NodeConfig, IShape, IG6GraphEvent, ShapeOptions } from '@antv/g6';
 import { AnchorBaseConfig_DTS, BlockNames_DTS } from './service';
 
 export interface GraphOptions {
@@ -23,19 +23,9 @@ export type IIGroup = IGroup & {
   [key: string]: any;
 };
 
-export type IShapeOptions = Partial<{
-  itemType: string;
-  shapeType: string;
-  draw: (cfg?: IModelConfig, group?: IIGroup) => IShape;
-  drawShape: (cfg: IModelConfig, group: IIGroup) => IShape;
-  afterDraw: (cfg?: ModelConfig, group?: IIGroup, rst?: IShape) => void;
-  afterUpdate: (cfg?: ModelConfig, item?: Item) => void;
-  setState: (name?: string, value?: string | boolean, item?: Item) => void;
-  getAnchorPoints: (cfg?: IModelConfig) => AnchorBaseConfigWithPosition[] | undefined;
-  update: (cfg: IModelConfig, item: Item, updateType?: UpdateType) => void;
-
-  calcNodeHeight: (cfg?: INodeConfig, group?: IIGroup) => void;
-  assembleShape: (cfg?: INodeConfig, group?: IIGroup) => void;
+export type IShapeOptions = ShapeOptions & Partial<{
+  calcNodeHeight: (cfg?: NodeConfig, group?: IGroup) => void;
+  assembleShape: (cfg?: INodeConfig, group?: IGroup) => void;
   getShapeStyle: (cfg: IModelConfig) => void;
   initAnchor: (cfg: IModelConfig, group: IIGroup) => void;
   drawAnchor: (cfg: IModelConfig, group: IIGroup) => void;
@@ -224,21 +214,20 @@ export interface IFuncNodeConfig {
 }
 
 
-export type INodeConfig<T extends NodeConfigDataUnion = {}> = Partial<
-  {
-    type: BlockNames_DTS | string; // 节点类型
-    translateType: string; // 翻译类型
-    nodeWidth: number; // 节点宽度
-    nodeHeight: number; // 节点高度
-    label: {
-      en_us: string;
-      zh_cn: string;
-    }; // 标题中文名称
-    name: string; // 标题英文名称
-    img: string; // 节点icon图标
-    data: NodeConfigData<T>;
-  } & NodeConfig
->;
+export type INodeConfig<T extends NodeConfigDataUnion = {}> =
+{
+  type: BlockNames_DTS | string; // 节点类型
+  translateType: string; // 翻译类型
+  nodeWidth: number; // 节点宽度
+  nodeHeight: number; // 节点高度
+  label: {
+    en_us: string;
+    zh_cn: string;
+  }; // 标题中文名称
+  name: string; // 标题英文名称
+  img: string; // 节点icon图标
+  data: NodeConfigData<T>;
+} & NodeConfig
 
 // 翻译有关字段存在这里
 export type NodeConfigData<T extends NodeConfigDataUnion = {}> = T extends infer U

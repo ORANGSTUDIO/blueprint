@@ -46,3 +46,4 @@ declare module "@antv/g6" {
     [key: string]: any;
   }
 }
+

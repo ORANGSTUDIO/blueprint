@@ -10,7 +10,6 @@ import { SchemaType } from "./interfaces/schema";
 import Action from "./Action";
 import DragNodeAction from "./actions/DragNodeAction";
 
-
 registerFactory(G6);
 export default class Graph {
   private graph: G6Graph;
