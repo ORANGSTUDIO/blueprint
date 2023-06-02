@@ -7,16 +7,17 @@ import helpSvg from '../assets/imgs/help.svg';
 import circleSmSvg from '../assets/imgs/circle-sm.svg';
 import { getStatementSvg } from "../utils/getStatementSvg";
 import ensureHTTPS from "../utils/ensureHTTPS";
+import _ from "lodash";
 
 
-export interface LogicNodeRecord {
+export interface CommonNodeConfig {
   name: string; // varchar(100) []	名称
   label: string; // 标签
   cover: string; // 封面
   intro: string; // varchar(100) []	介绍
 }
 
-export default function registerCommonNode(record: LogicNodeRecord): void {
+export default function registerCommonNode(record: CommonNodeConfig): void {
   const { name, label, cover, intro } = record;
   const nodeDefinition: IShapeOptions = {
     itemType: name,
@@ -154,7 +155,7 @@ export default function registerCommonNode(record: LogicNodeRecord): void {
           y: offsetY + 22,
           fontSize: 14,
           lineHeight: 20,
-          text: (cfg.label || cfg.data.label || label),
+          text: label,
           fill: 'rgba(0,0,0,.85)',
           fontWeight: 'bolder',
           textBaseline: 'middle',
