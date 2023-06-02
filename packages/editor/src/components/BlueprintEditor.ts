@@ -49,15 +49,7 @@ export class BlueprintEditor extends LitElement {
               "x": 175,
               "y": 284,
               "type": "logic-start-node",
-              "label": {
-                  "en_us": "Start",
-                  "zh_cn": "开始"
-              },
               "data": {
-                  "label": {
-                      "en_us": "Start",
-                      "zh_cn": "开始"
-                  },
                   "anchors": [
                       {
                           "nodeId": "logic-start-node",
@@ -65,10 +57,6 @@ export class BlueprintEditor extends LitElement {
                           "index": 0,
                           "connected": false,
                           "data": {
-                              "label": {
-                                  "zh_cn": "开始",
-                                  "en_us": "Start"
-                              },
                               "name": "output"
                           }
                       }
@@ -105,15 +93,7 @@ export class BlueprintEditor extends LitElement {
               "id": "logic-end-node",
               "x": 740,
               "y": 284,
-              "label": {
-                  "en_us": "End",
-                  "zh_cn": "结束"
-              },
               "data": {
-                  "label": {
-                      "en_us": "End",
-                      "zh_cn": "结束"
-                  },
                   "anchors": [
                       {
                           "tag": "statement_input",
@@ -122,10 +102,6 @@ export class BlueprintEditor extends LitElement {
                           "connected": false,
                           "data": {
                               "_isEntry": true,
-                              "label": {
-                                  "zh_cn": "结束",
-                                  "en_us": "End"
-                              }
                           }
                       },
                       {
@@ -136,10 +112,6 @@ export class BlueprintEditor extends LitElement {
                           "data": {
                               "tag": "var_input",
                               "type": "integer",
-                              "label": {
-                                  "zh_cn": "返回值",
-                                  "en_us": "Return value"
-                              },
                               "name": "return_value",
                               "schema": {
                                   "type": "integer"
