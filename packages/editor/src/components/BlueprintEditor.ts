@@ -49,159 +49,21 @@ export class BlueprintEditor extends LitElement {
               "x": 175,
               "y": 284,
               "type": "logic-start-node",
-              "data": {
-                  "anchors": [
-                      {
-                          "nodeId": "logic-start-node",
-                          "tag": "statement_output",
-                          "index": 0,
-                          "connected": false,
-                          "data": {
-                              "name": "output"
-                          }
-                      }
-                  ]
-              },
-              "style": {
-                  "nodeState:default": {
-                      "cursor": "default",
-                      "stroke": "#d9d9d9",
-                      "lineWidth": 1,
-                      "shadowColor": null
-                  },
-                  "nodeState:hover": {
-                      "lineWidth": 1,
-                      "stroke": "#d9d9d9",
-                      "shadowColor": "#d9d9d9"
-                  },
-                  "nodeState:selected": {
-                      "lineWidth": 2,
-                      "stroke": "#1890ff",
-                      "shadowColor": null
-                  },
-                  "nodeState:matched": {
-                      "lineWidth": 2,
-                      "stroke": "#1890ff",
-                      "shadowColor": null
-                  }
-              },
-              "nodeWidth": 210,
-              "nodeHeight": 134
           },
           {
               "type": "logic-end-node",
               "id": "logic-end-node",
               "x": 740,
               "y": 284,
-              "data": {
-                  "anchors": [
-                      {
-                          "tag": "statement_input",
-                          "index": 0,
-                          "nodeId": "logic-end-node",
-                          "connected": false,
-                          "data": {
-                              "_isEntry": true,
-                          }
-                      },
-                      {
-                          "nodeId": "logic-end-node",
-                          "tag": "var_input",
-                          "index": 1,
-                          "connected": false,
-                          "data": {
-                              "tag": "var_input",
-                              "type": "integer",
-                              "name": "return_value",
-                              "schema": {
-                                  "type": "integer"
-                              }
-                          }
-                      }
-                  ]
-              },
-              "style": {
-                  "nodeState:default": {
-                      "cursor": "default",
-                      "stroke": "#d9d9d9",
-                      "lineWidth": 1,
-                      "shadowColor": null
-                  },
-                  "nodeState:hover": {
-                      "lineWidth": 1,
-                      "stroke": "#d9d9d9",
-                      "shadowColor": "#d9d9d9"
-                  },
-                  "nodeState:selected": {
-                      "lineWidth": 2,
-                      "stroke": "#1890ff",
-                      "shadowColor": null
-                  },
-                  "nodeState:matched": {
-                      "lineWidth": 2,
-                      "stroke": "#1890ff",
-                      "shadowColor": null
-                  }
-              },
-              "nodeWidth": 210,
-              "nodeHeight": 134
           },
           {
               "id": "1684981368175660",
               "x": 270.796875,
               "y": 459,
-              "type": "logic-string-node",
+              "type": "logic-variable-node",
               "data": {
-                  "varId": "30ebcf14cc204376bc19e34913dbc87e",
-                  "varName": "morenzifuchuan",
-                  "varLabel": "默认字符串",
-                  "schema": {
-                      "type": "string"
-                  },
-                  "anchors": [
-                      {
-                          "nodeId": "16849813662049865",
-                          "tag": "var_output",
-                          "index": 0,
-                          "data": {
-                              "label": "默认字符串",
-                              "value": "",
-                              "type": "string",
-                              "name": "morenzifuchuan",
-                              "_route_path": "30ebcf14cc204376bc19e34913dbc87e",
-                              "schema": {
-                                  "type": "string"
-                              }
-                          },
-                          "connected": true
-                      }
-                  ]
-              },
-              "style": {
-                  "nodeState:default": {
-                      "cursor": "default",
-                      "stroke": "#d9d9d9",
-                      "lineWidth": 1,
-                      "shadowColor": null
-                  },
-                  "nodeState:hover": {
-                      "lineWidth": 1,
-                      "stroke": "#d9d9d9",
-                      "shadowColor": "#d9d9d9"
-                  },
-                  "nodeState:selected": {
-                      "lineWidth": 2,
-                      "stroke": "#1890ff",
-                      "shadowColor": null
-                  },
-                  "nodeState:matched": {
-                      "lineWidth": 2,
-                      "stroke": "#1890ff",
-                      "shadowColor": null
-                  }
-              },
-              "nodeHeight": 40,
-              "nodeWidth": 150
+                "uuid": "30ebcf14cc204376bc19e34913dbc87e",
+              }
           }
       ],
       "edges": [
