@@ -1,6 +1,7 @@
 import { JSONSchema4, JSONSchema4TypeName } from 'json-schema';
 
 export interface Schema extends JSONSchema4 {
+  type: SchemaType;
   /**
    * 生成的类名
    */

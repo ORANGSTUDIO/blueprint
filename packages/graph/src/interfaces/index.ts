@@ -1,13 +1,14 @@
-import G6, { IGroup, INode, Item, ModelConfig, UpdateType, NodeConfig, IShape, IG6GraphEvent, ShapeOptions } from '@antv/g6';
+import G6, { IGroup, INode, ModelConfig, NodeConfig, IShape, IG6GraphEvent, ShapeOptions } from '@antv/g6';
 import { AnchorBaseConfig_DTS, BlockNames_DTS } from './service';
+import { AnchorTag } from './anchor';
+
+export * from './anchor';
 
 export interface GraphOptions {
   container: HTMLElement;
 }
 
 export type IG6 = typeof G6;
-
-export type AnchorItem = [number, number, AnchorItemCfg];
 
 export type IIGroup = IGroup & {
   $getItem: (className: string) => IShape;
@@ -45,13 +46,6 @@ export interface IModelConfig extends ModelConfig {
   data: INodeConfig;
 }
 
-export enum AnchorTag {
-  STATEMENT_INPUT = 'statement_input',
-  STATEMENT_OUTPUT = 'statement_output',
-  VAR_INPUT = 'var_input',
-  VAR_OUTPUT = 'var_output',
-}
-
 export enum StageMode {
   Method = 'method',
   Variable = 'variable',
@@ -81,13 +75,7 @@ export interface LogicCategoryItem {
   meta?: INodeConfig; // 节点配置
 }
 
-export interface AnchorItemCfg {
-  index: number;
-  nodeId: string;
-  tag: AnchorTag;
-  connected: boolean; // 是否被链接
-  data: AnchorData;
-}
+
 
 export interface LifeCircle {
   value: string;

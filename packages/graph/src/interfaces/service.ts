@@ -1,5 +1,5 @@
 import { EdgeConfig } from '@antv/g6';
-import { INodeConfig, MessageType } from './index';
+import { AnchorTag, INodeConfig, MessageType } from './index';
 import { Schema } from './schema';
 
 export type ParamsOptional_PT<T> = {
@@ -105,27 +105,7 @@ export enum BlockNames_DTS {
   LOGIC_REGEX_TEST_NODE = 'logic-regex-test-node',
 }
 
-/**
- * 锚点类型
- */
-export enum AnchorTag_DTS {
-  /**
-   * 输入
-   */
-  STATEMENT_INPUT = 'statement_input',
-  /**
-   * 输出
-   */
-  STATEMENT_OUTPUT = 'statement_output',
-  /**
-   * 入参
-   */
-  VAR_INPUT = 'var_input',
-  /**
-   * 出参
-   */
-  VAR_OUTPUT = 'var_output',
-}
+
 
 /**
  * 支线任务
@@ -199,7 +179,7 @@ export enum DescInfo_DTS {
  */
 export interface AnchorBaseConfig_DTS {
   nodeId: string;
-  tag: AnchorTag_DTS;
+  tag: AnchorTag;
   index: number; // 锚点位置
   data: {
     _desc?: DescInfo_DTS;
@@ -213,7 +193,7 @@ export interface AnchorBaseConfig_DTS {
     value?: any;
     constOrVariable?: ConstOrVariable_DTS; // 使用常量或者变量
     uuids?: any[];
-    tag?: AnchorTag_DTS;
+    tag?: AnchorTag;
     label?: string | any; // 中文描述
     name?: string; // 变量方法名（供Blockly使用）
     type?: string; //  连线判断

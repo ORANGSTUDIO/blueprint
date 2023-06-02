@@ -2,7 +2,7 @@ import G6, { EdgeConfig, Graph as G6Graph, GraphData, IG6GraphEvent, INode, Item
 import { GraphEventMap, GraphOptions, INodeConfig, AnchorTag, AddEdgeOptions } from "./interfaces";
 import _ from 'lodash';
 import registerFactory from "./register-factory";
-import { AnchorBaseConfig_DTS, AnchorTag_DTS, ConstOrVariable_DTS } from './interfaces/service';
+import { AnchorBaseConfig_DTS, ConstOrVariable_DTS } from './interfaces/service';
 import getImgByType from "./utils/getImgByType";
 import { DEFAULT_STYLES, LOGIC_STATEMENT_EDGE, LOGIC_VARIABLE_EDGE } from "./consts";
 import { getEgdeStyle } from "./utils/getEgdeStyle";
@@ -59,7 +59,7 @@ export default class Graph {
     const sourceAnchorData = sourceData.anchors[sourceAnchor] as AnchorBaseConfig_DTS;
     const targetAnchorData = targetData.anchors[targetAnchor] as AnchorBaseConfig_DTS;
     const souceDataType = _.get(sourceAnchorData, 'data.schema.type') || sourceAnchorData.data.type;
-    const isStatement = sourceAnchorData.tag === AnchorTag_DTS.STATEMENT_OUTPUT;
+    const isStatement = sourceAnchorData.tag === AnchorTag.STATEMENT_OUTPUT;
 
     if (!isStatement && targetAnchorData.data.constOrVariable) {
       targetAnchorData.data.constOrVariable = ConstOrVariable_DTS.USE_VARIABLE;

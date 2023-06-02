@@ -5,11 +5,7 @@ import _ from 'lodash';
 // import Vue from 'vue';
 // import { MethodRecord } from '../../../../../core/interfaces/db_method';
 import {
-  AnchorBaseConfig_DTS,
-  AnchorTag_DTS,
   BlockNames_DTS,
-  ConstOrVariable_DTS,
-  DescInfo_DTS,
 } from '../interfaces/service';
 import {
   IFuncNodeConfig,

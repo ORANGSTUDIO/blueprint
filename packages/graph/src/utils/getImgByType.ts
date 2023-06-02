@@ -1,10 +1,11 @@
+import { SchemaType } from "../interfaces/schema";
 import getColorByType from "./getColorByType";
 
-export default function getImgByType(type: string, direction: 'in' | 'out' = 'in', active: boolean = false) {
+export default function getImgByType(type: SchemaType, direction: 'in' | 'out' = 'in', active: boolean = false) {
   const exsit = ['string', 'number', 'boolean', 'object', 'array', 'integer', 'undefined'].includes(type);
   if (!exsit) {
     console.warn('graph/util/index', `不支持的数据类型:${type}`);
-    type = 'undefined';
+    type = 'null';
   }
 
   let svgXmlString: string;

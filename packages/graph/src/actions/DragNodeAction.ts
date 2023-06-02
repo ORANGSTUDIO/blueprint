@@ -2,8 +2,7 @@ import Action from "../Action";
 
 import { IEdge, IG6GraphEvent, IGraph, INode } from '@antv/g6';
 import _ from 'lodash';
-import { AnchorTag, IG6, INodeConfig } from '../interfaces/';
-import { AnchorTag_DTS } from '../interfaces/service';
+import { AnchorTag, INodeConfig } from '../interfaces/';
 
 /**
  * 计算鼠标位置与矩形最小距离
@@ -310,7 +309,7 @@ export default class DragNodeAction extends Action {
 
           // 找出sourceNode的语句输出锚点的索引
           const sourceStatementOutputAnchor = sourceNodeData.anchors.find(
-            (i) => i.tag === AnchorTag_DTS.STATEMENT_OUTPUT,
+            (i) => i.tag === AnchorTag.STATEMENT_OUTPUT,
           );
 
           if (!sourceStatementOutputAnchor) {
@@ -328,7 +327,7 @@ export default class DragNodeAction extends Action {
 
 
           const targetStatementInputAnchor = targetNodeData.anchors.find(
-            (i) => i.tag === AnchorTag_DTS.STATEMENT_INPUT,
+            (i) => i.tag === AnchorTag.STATEMENT_INPUT,
           );
 
           if (!targetStatementInputAnchor) {

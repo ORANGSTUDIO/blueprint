@@ -1,6 +1,6 @@
-import G6, { IGroup, NodeConfig, ShapeOptions } from "@antv/g6";
-import { AnchorBaseConfigWithPosition, AnchorTag, IIGroup, IModelConfig, INodeConfig, IShapeOptions } from "../interfaces";
-import { AnchorTag_DTS, BlockNames_DTS } from "../interfaces/service";
+import G6, { IGroup, ModelConfig, NodeConfig } from "@antv/g6";
+import { AnchorTag, IIGroup, INodeConfig, IShapeOptions, AnchorStatementInput, AnchorStatementOutput, AnchorVarInput, AnchorVarOutput } from "../interfaces";
+import { BlockNames_DTS } from "../interfaces/service";
 import getImgByType from "../utils/getImgByType";
 
 import helpSvg from '../assets/imgs/help.svg';
@@ -8,17 +8,11 @@ import circleSmSvg from '../assets/imgs/circle-sm.svg';
 import { getStatementSvg } from "../utils/getStatementSvg";
 import ensureHTTPS from "../utils/ensureHTTPS";
 import _ from "lodash";
+import LogicNode from "./LogicNode";
+import LogicStartNode from "./nodes/LogicStartNode";
 
-
-export interface CommonNodeConfig {
-  name: string; // varchar(100) []	名称
-  label: string; // 标签
-  cover: string; // 封面
-  intro: string; // varchar(100) []	介绍
-}
-
-export default function registerCommonNode(record: CommonNodeConfig): void {
-  const { name, label, cover, intro } = record;
+export default function registerCommonNode(logicNode: LogicNode): void {
+  const { name, label, cover, intro } = logicNode;
   const nodeDefinition: IShapeOptions = {
     itemType: name,
 
@@ -38,15 +32,11 @@ export default function registerCommonNode(record: CommonNodeConfig): void {
         throw new Error('no getAnchorPoints')
       }
 
-      const anchors = this.getAnchorPoints(cfg);
-
-      if (!anchors) {
-        throw new Error('no anchors')
-      }
+      const anchors = logicNode.getAnchors()
 
       const leftLength = anchors.filter(
-        (anchor: AnchorBaseConfigWithPosition) =>
-          anchor[2].tag === AnchorTag_DTS.VAR_INPUT || anchor[2].tag === AnchorTag_DTS.STATEMENT_INPUT,
+        (anchor) =>
+          anchor.tag === AnchorTag.VAR_INPUT || anchor.tag === AnchorTag.STATEMENT_INPUT,
       ).length;
       const maxLength = Math.max(leftLength, anchors.length - leftLength);
 
@@ -60,19 +50,19 @@ export default function registerCommonNode(record: CommonNodeConfig): void {
         right: 0,
       };
       [
-        { tag: AnchorTag_DTS.STATEMENT_INPUT, pos: 'left' },
-        { tag: AnchorTag_DTS.STATEMENT_OUTPUT, pos: 'right' },
-        { tag: AnchorTag_DTS.VAR_INPUT, pos: 'left' },
-        { tag: AnchorTag_DTS.VAR_OUTPUT, pos: 'right' },
+        { tag: AnchorTag.STATEMENT_INPUT, pos: 'left' },
+        { tag: AnchorTag.STATEMENT_OUTPUT, pos: 'right' },
+        { tag: AnchorTag.VAR_INPUT, pos: 'left' },
+        { tag: AnchorTag.VAR_OUTPUT, pos: 'right' },
       ].forEach((config) => {
         anchors
-          .filter((a) => a[2].tag === config.tag)
+          .filter((a) => a.tag === config.tag)
           .forEach((anchor) => {
             const text = group.addShape('text', {
               attrs: {
                 x: 0,
                 y: 0,
-                text: anchor[2].data.label,
+                text: anchor.data.label,
                 fill: 'black',
                 fontSize: 12,
                 lineHeight: 20,
@@ -183,19 +173,21 @@ export default function registerCommonNode(record: CommonNodeConfig): void {
       }
 
       // 动态获取锚点
-      const anchorConfigs = this.getAnchorPoints(cfg) as AnchorBaseConfigWithPosition[];
+      const anchors = logicNode.getAnchors()
 
-      const statementInputAnchors = anchorConfigs.filter(
-        (anchor) => anchor[2].tag === AnchorTag_DTS.STATEMENT_INPUT,
-      );
+      const statementInputAnchors = anchors.filter(
+        (anchor) => anchor.tag === AnchorTag.STATEMENT_INPUT,
+      ) as AnchorStatementInput[];
 
       if (statementInputAnchors.length) {
         statementInputAnchors.forEach((anchor, i) => {
           const {
             index,
             connected,
-            data: { label },
-          } = anchor[2];
+            data: {
+              label
+            }
+          } = anchor;
           // 逻辑流程的输入
           group.addShape('text', {
             attrs: {
@@ -230,17 +222,20 @@ export default function registerCommonNode(record: CommonNodeConfig): void {
       }
 
       // 流程输出
-      const statementOutputAnchors = anchorConfigs.filter(
-        (anchor) => anchor[2].tag === AnchorTag_DTS.STATEMENT_OUTPUT,
-      );
+      const statementOutputAnchors = anchors.filter(
+        (anchor) => anchor.tag === AnchorTag.STATEMENT_OUTPUT,
+      ) as AnchorStatementOutput[];
 
       if (statementOutputAnchors.length) {
         statementOutputAnchors.forEach((anchor, i) => {
           const {
             index,
             connected,
-            data: { label, name },
-          } = anchor[2];
+            data: {
+              name,
+              label
+            }
+          } = anchor;
 
           group.addShape('text', {
             attrs: {
@@ -275,15 +270,15 @@ export default function registerCommonNode(record: CommonNodeConfig): void {
         });
       }
       // 参数输入
-      const variableInputAnchors = anchorConfigs.filter((anchor) => anchor[2].tag === AnchorTag_DTS.VAR_INPUT);
+      const variableInputAnchors = anchors.filter((anchor) => anchor.tag === AnchorTag.VAR_INPUT) as AnchorVarInput[];
 
       if (variableInputAnchors && variableInputAnchors.length) {
         _.forEach(variableInputAnchors, (anchor, order) => {
           const {
             index,
             connected,
-            data: { label, type, value, schema },
-          } = anchor[2];
+            data: { label, value, schema },
+          } = anchor;
 
           group.addShape('image', {
             attrs: {
@@ -291,7 +286,7 @@ export default function registerCommonNode(record: CommonNodeConfig): void {
               y: offsetY + 44 + (statementInputAnchors.length + order + 1) * 30 - 8,
               width: 14,
               height: 14,
-              img: getImgByType(schema ? schema.type : type, 'in', !!connected),
+              img: getImgByType(schema.type, 'in', !!connected),
               cursor: 'pointer',
               anchor_index: index,
             },
@@ -339,15 +334,15 @@ export default function registerCommonNode(record: CommonNodeConfig): void {
       }
 
       // 参数输出
-      const variableOutputAnchors = anchorConfigs.filter((anchor) => anchor[2].tag === AnchorTag_DTS.VAR_OUTPUT);
+      const variableOutputAnchors = anchors.filter((anchor) => anchor.tag === AnchorTag.VAR_OUTPUT) as AnchorVarOutput[];
 
       if (variableOutputAnchors && variableOutputAnchors.length) {
         _.forEach(variableOutputAnchors, (anchor, order) => {
           const {
             index,
             connected,
-            data: { label, name, type, schema },
-          } = anchor[2];
+            data: { label, name, schema },
+          } = anchor;
 
           group.addShape('image', {
             attrs: {
@@ -355,7 +350,7 @@ export default function registerCommonNode(record: CommonNodeConfig): void {
               y: offsetY + 44 + (statementOutputAnchors.length + order + 1) * 30 - 8,
               width: 14,
               height: 14,
-              img: getImgByType(schema ? schema.type : type, 'out', !!connected),
+              img: getImgByType(schema.type, 'out', !!connected),
               cursor: 'pointer',
               anchor_index: index,
             },
@@ -389,26 +384,22 @@ export default function registerCommonNode(record: CommonNodeConfig): void {
       group.sort();
     },
 
-    getAnchorPoints(cfg?: IModelConfig): AnchorBaseConfigWithPosition[] {
+    getAnchorPoints(cfg?: ModelConfig): number[][] {
       if (!cfg) {
         throw new Error('no cfg')
       }
+
       // 这部分的逻辑根据后台返回的数据配置(getConfig)
-      const nodeConfigData = cfg.data;
-      const anchors = nodeConfigData.anchors;
+      const anchors = logicNode.getAnchors();
 
       let leftIndex = 0;
       let rightIndex = 0;
 
-      if (!anchors) {
-        throw new Error('no anchors')
-      }
-
       return anchors.map((anchor) => {
-        if (anchor.tag === AnchorTag_DTS.STATEMENT_INPUT || anchor.tag === AnchorTag_DTS.VAR_INPUT) {
-          return [0, (74 + leftIndex++ * 30) / cfg.nodeHeight, anchor];
+        if (anchor.tag === AnchorTag.STATEMENT_INPUT || anchor.tag === AnchorTag.VAR_INPUT) {
+          return [0, (74 + leftIndex++ * 30) / logicNode.height];
         } else {
-          return [1, (74 + rightIndex++ * 30) / cfg.nodeHeight, anchor];
+          return [1, (74 + rightIndex++ * 30) / logicNode.height];
         }
       });
     },
@@ -418,12 +409,7 @@ export default function registerCommonNode(record: CommonNodeConfig): void {
 }
 
 export function registerCommonNodes() {
-  registerCommonNode({
-    name: 'logic-start-node',
-    label: 'label',
-    cover: 'cover',
-    intro: 'intro',
-  });
+  registerCommonNode(new LogicStartNode());
 }
 
 
