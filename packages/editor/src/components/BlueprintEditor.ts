@@ -435,8 +435,8 @@ export class BlueprintEditor extends LitElement {
     }
 
     .blueprint-graph-container {
-      width: 500px;
-      height: 500px;
+      width: 1000px;
+      height: 800px;
     }
 
     .logo {

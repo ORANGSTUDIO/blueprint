@@ -9,9 +9,9 @@ import { getStatementSvg } from "../utils/getStatementSvg";
 import ensureHTTPS from "../utils/ensureHTTPS";
 import _ from "lodash";
 import LogicNode from "./LogicNode";
-import LogicStartNode from "./nodes/LogicStartNode";
+import { defaultNodes } from "./nodes";
 
-export default function registerCommonNode(logicNode: LogicNode): void {
+export function registerCommonNode(logicNode: LogicNode): void {
   const { name, label, cover, intro } = logicNode;
   const nodeDefinition: IShapeOptions = {
     itemType: name,
@@ -421,7 +421,9 @@ export default function registerCommonNode(logicNode: LogicNode): void {
 }
 
 export function registerCommonNodes() {
-  registerCommonNode(new LogicStartNode());
+  defaultNodes.forEach(defaultNode => {
+    registerCommonNode(new defaultNode());
+  })
 }
 
 
