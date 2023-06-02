@@ -45,16 +45,28 @@ export default function registerCommonNode(logicNode: LogicNode): void {
       cfg.nodeWidth = titleSize < 9 ? 210 : 210 + (titleSize - 8) * 16;
 
       const widthList: number[] = [];
-      const index = {
+
+      type Pos = 'left' | 'right';
+      const index: {
+        [pos in Pos]: number
+      } = {
         left: 0,
         right: 0,
       };
-      [
+
+      type AnchorPos = {
+        tag: AnchorTag;
+        pos: Pos;
+      }
+
+      const items: AnchorPos[] = [
         { tag: AnchorTag.STATEMENT_INPUT, pos: 'left' },
         { tag: AnchorTag.STATEMENT_OUTPUT, pos: 'right' },
         { tag: AnchorTag.VAR_INPUT, pos: 'left' },
         { tag: AnchorTag.VAR_OUTPUT, pos: 'right' },
-      ].forEach((config) => {
+      ]
+
+      items.forEach((config) => {
         anchors
           .filter((a) => a.tag === config.tag)
           .forEach((anchor) => {
