@@ -1,5 +1,5 @@
 {
-  "name": "@blueprint/graph",
+  "name": "@orang/blueprint-graph",
   "version": "1.0.0",
   "description": "",
   "main": "src/index.ts",

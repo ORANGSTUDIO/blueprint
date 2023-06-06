@@ -13,7 +13,7 @@ importers:
 
   apps/lit:
     dependencies:
-      '@blueprint/editor':
+      '@orang/blueprint-editor':
         specifier: workspace:*
         version: link:../../packages/editor
       lit:
@@ -29,7 +29,7 @@ importers:
 
   apps/vue:
     dependencies:
-      '@blueprint/editor':
+      '@orang/blueprint-editor':
         specifier: workspace:*
         version: link:../../packages/editor
       vue:
@@ -51,7 +51,7 @@ importers:
 
   packages/editor:
     dependencies:
-      '@blueprint/graph':
+      '@orang/blueprint-graph':
         specifier: workspace:*
         version: link:../graph
       lit:

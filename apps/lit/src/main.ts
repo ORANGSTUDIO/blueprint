@@ -1,1 +1,1 @@
-import "@blueprint/editor"
+import "@orang/blueprint-editor"

@@ -12,13 +12,13 @@ Early zero-code or low-code development generally achieved business process buil
 
 Install
 ``` bash
-pnpm i @blueprint/editor
+pnpm i @orang/blueprint-editor
 ```
 
 Import the component
 
 ``` typescript
-import '@blueprint/editor'
+import '@orang/blueprint-editor'
 ```
 
 Use by a html tag

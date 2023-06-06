@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import '@blueprint/editor'
+import '@orang/blueprint-editor'
 </script>
 
 <template>

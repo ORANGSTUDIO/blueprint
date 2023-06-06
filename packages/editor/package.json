@@ -1,5 +1,5 @@
 {
-  "name": "@blueprint/editor",
+  "name": "@orang/blueprint-editor",
   "version": "1.0.0",
   "description": "",
   "main": "src/index.ts",
@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "lit": "^2.7.2",
-    "@blueprint/graph": "workspace:*"
+    "@orang/blueprint-graph": "workspace:*"
   },
   "keywords": [],
   "author": "",
