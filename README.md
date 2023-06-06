@@ -39,13 +39,13 @@ Our open source business has started, so stay tuned!
 
 Install
 ``` bash
-pnpm i @blueprint/editor
+pnpm i @orang/blueprint-editor
 ```
 
 Import the component
 
 ``` typescript
-import '@blueprint/editor'
+import '@orang/blueprint-editor'
 ```
 
 Use by a html tag

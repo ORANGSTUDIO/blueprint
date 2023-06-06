@@ -1,5 +1,5 @@
 {
-  "name": "@blueprint/lit",
+  "name": "@orang/lit",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "lit": "^2.7.2",
-    "@blueprint/editor": "workspace:*"
+    "@orang/blueprint-editor": "workspace:*"
   },
   "devDependencies": {
     "typescript": "^5.0.2",

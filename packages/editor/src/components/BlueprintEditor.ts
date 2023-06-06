@@ -1,4 +1,4 @@
-import { Graph } from '@blueprint/graph'
+import { Graph } from '@orang/blueprint-graph'
 import { LitElement, css, html } from 'lit'
 import { customElement, property, query } from 'lit/decorators.js'
 
