@@ -1,6 +1,4 @@
-import { IShape, ShapeStyle, ModelConfig } from "@antv/g6";
-import { INodeConfig } from ".";
-import { AnchorBaseConfig_DTS, AnchorTag_DTS } from "./service";
+import { IShape, ShapeStyle } from "@antv/g6";
 
 export interface DefaultStyles{
   nodeStyles: ShapeStyle;
