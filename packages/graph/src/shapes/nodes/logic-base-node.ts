@@ -10,9 +10,9 @@ const { nodeStyles, anchorPointStyles } = DEFAULT_STYLES;
 
 function getStyle(options: any, cfg: any): ShapeStyle {
   return {
-    ...cfg, // data中配置的样式
+    ...cfg,
     ...nodeStyles,
-    ...options, // 代码中传进来的样式
+    ...options,
     anchorPointStyles,
   };
 }
@@ -25,18 +25,17 @@ export default (G6: IG6) => {
     // 自定义方法
     calcNodeHeight(cfg?: ModelConfig) {
       if (!cfg) {
-        return
+        return;
       }
       cfg.nodeWidth = 210;
       cfg.nodeHeight = 132;
     },
 
-    assembleShape(_cfg?: ModelConfig, _group?: IGroup) {
-    },
+    assembleShape(_cfg?: ModelConfig, _group?: IGroup) {},
 
     getShapeStyle(cfg: ModelConfig) {
       if (!cfg.nodeWidth || !cfg.nodeHeight) {
-        throw new Error('invalid cfg')
+        throw new Error('invalid cfg');
       }
 
       return getStyle.call(
@@ -47,7 +46,7 @@ export default (G6: IG6) => {
           x: -cfg.nodeWidth / 2,
           y: -cfg.nodeHeight / 2,
         },
-        cfg,
+        cfg
       );
     },
 
@@ -63,7 +62,7 @@ export default (G6: IG6) => {
           if (line) {
             line.remove();
           }
-          group.anchorShapes.forEach((a) => a.remove());
+          group.anchorShapes.forEach(a => a.remove());
         }
         group.anchorShapes = [];
       };
@@ -79,51 +78,55 @@ export default (G6: IG6) => {
 
       // 绘制锚点坐标
       anchors &&
-      anchors.forEach((p: number[], i: number) => {
-        const x = bBox.width * (p[0] - 0.5);
-        const y = bBox.height * (p[1] - 0.5);
+        anchors.forEach((p: number[], i: number) => {
+          const x = bBox.width * (p[0] - 0.5);
+          const y = bBox.height * (p[1] - 0.5);
 
-        const anchor = group.addShape('circle', {
-          attrs: {
+          const anchor = group.addShape('circle', {
+            attrs: {
+              x,
+              y,
+              ...anchorPointStyles,
+            },
+            opacity: 1,
+            zIndex: 1,
+            nodeId: group.get('id'),
+            className: 'node-anchor',
+            draggable: true,
+            isAnchor: true,
+            index: i,
+          });
+
+          const anchorGroup = this.getNodeAnchorBg({
+            cfg,
+            group,
             x,
             y,
-            ...anchorPointStyles,
-          },
-          opacity: 1,
-          zIndex: 1,
-          nodeId: group.get('id'),
-          className: 'node-anchor',
-          draggable: true,
-          isAnchor: true,
-          index: i,
+            anchorIdx: i,
+            position: p,
+          });
+
+          anchorEvent(anchorGroup, group, p);
+
+          group.anchorShapes.push(anchor);
+          group.anchorShapes.push(anchorGroup);
         });
-
-        const anchorGroup = this.getNodeAnchorBg({
-          cfg,
-          group,
-          x,
-          y,
-          anchorIdx: i,
-          position: p,
-        });
-
-        anchorEvent(anchorGroup, group, p);
-
-        group.anchorShapes.push(anchor);
-        group.anchorShapes.push(anchorGroup);
-      });
 
       // 查找所有锚点
       group.getAllAnchors = () => {
-        return group.anchorShapes.filter((c) => c.get('isAnchor') === true);
+        return group.anchorShapes.filter(c => c.get('isAnchor') === true);
       };
       // 查找指定锚点
-      group.getAnchor = (i) => {
-        return group.anchorShapes.filter((c) => c.get('className') === 'node-anchor' && c.get('index') === i);
+      group.getAnchor = i => {
+        return group.anchorShapes.filter(
+          c => c.get('className') === 'node-anchor' && c.get('index') === i
+        );
       };
       // 查找所有锚点背景
       group.getAllAnchorBg = () => {
-        return group.anchorShapes.filter((c) => c.get('className') === 'node-anchor-bg');
+        return group.anchorShapes.filter(
+          c => c.get('className') === 'node-anchor-bg'
+        );
       };
     },
 
@@ -156,11 +159,11 @@ export default (G6: IG6) => {
 
     drawShape(cfg?: ModelConfig, group?: IGroup) {
       if (!cfg) {
-        throw new Error('no cfg')
+        throw new Error('no cfg');
       }
 
       if (!group) {
-        throw new Error('no group')
+        throw new Error('no group');
       }
       this.calcNodeHeight(cfg, group);
 
@@ -175,16 +178,17 @@ export default (G6: IG6) => {
 
       this.assembleShape(cfg, group);
 
-      group.$getItem = (className) => {
-        return group.get('children').find((item: Item) => item.get('className') === className);
+      group.$getItem = className => {
+        return group
+          .get('children')
+          .find((item: Item) => item.get('className') === className);
       };
 
       this.initAnchor(cfg, group);
       return keyShape;
     },
 
-    update(_cfg: ModelConfig, _node: Item, _updateType?: any) {
-    },
+    update(_cfg: ModelConfig, _node: Item, _updateType?: any) {},
     // update: null,
 
     setState(name?: string, value?: string | boolean, item?: Item) {
@@ -202,7 +206,7 @@ export default (G6: IG6) => {
       ];
 
       if (!item) {
-        return
+        return;
       }
 
       const group = item.getContainer() as IIGroup;
@@ -221,7 +225,7 @@ export default (G6: IG6) => {
         this.stateApplying.call(this, name, value, item);
       } else {
         console.warn(
-          `warning: ${name} 事件回调未注册!\n可继承该节点并通过 stateApplying 方法进行注册\n如已注册请忽略 (-_-!)`,
+          `warning: ${name} 事件回调未注册!\n可继承该节点并通过 stateApplying 方法进行注册\n如已注册请忽略 (-_-!)`
         );
       }
     },

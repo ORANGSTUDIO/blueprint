@@ -1,67 +1,56 @@
-import { IG6 } from '../interfaces';
 import { IG6GraphEvent, Item } from '@antv/g6';
-import { Graph } from '@antv/g6';
+import { BACKSPACE, DELETE } from '../consts';
+import { IG6 } from '../interfaces';
 import { BehaviorOptionThis } from '../interfaces/behavior';
 
 export default (G6: IG6) => {
-  const behavior: BehaviorOptionThis<'getEvents' | 'shouldBegin'> = {
+  const behavior: BehaviorOptionThis<'getEvents'> = {
     getEvents() {
       return {
-        'keydown': 'onKeydown',
+        keydown: 'onKeydown',
       };
     },
-    shouldBegin(e?: IG6GraphEvent) {
-      return true;
-    },
+
     onKeydown(e: IG6GraphEvent) {
-      const graph = this.graph as Graph;
-      // if (graph.cfg.canvas.cfg.el.getAttribute('isFocused') !== 'true') return;
-      if (!this.shouldBegin(e)) return;
-      /**
-       * TODO: 暂且不删除
-       * 删除节点时, 将与该节点连接的后代节点也删除
-       */
-      if (e.keyCode === 8 || e.keyCode === 46) {
-        const nodes = graph.findAllByState('node', 'nodeState:selected');
+      if (e.keyCode === BACKSPACE || e.keyCode === DELETE) {
+        const nodes = this.graph.findAllByState('node', 'nodeState:selected');
 
         if (nodes && nodes.length) {
           const $node = nodes[0].getContainer().get('item') as Item;
 
-          graph.emit('before-node-removed', {
+          this.graph.emit('before-node-removed', {
             target: $node,
             callback(confirm: boolean) {
               if (confirm) {
-                graph.remove($node);
-                // graph.set('after-node-selected', []);
-                graph.emit('after-node-selected');
-                graph.emit('after-node-removed', $node);
+                this.graph.remove($node);
+                this.graph.emit('after-node-selected');
+                this.graph.emit('after-node-removed', $node);
               }
             },
           });
         }
 
-        // 删除选中的边
-        const edges = graph.findAllByState('edge', 'edgeState:selected');
+        const edges = this.graph.findAllByState('edge', 'edgeState:selected');
 
         if (edges && edges.length) {
           const $edge = edges[0].getContainer().get('item');
+          const _this = this;
 
-          graph.emit('before-edge-removed', {
+          this.graph.emit('before-edge-removed', {
             target: $edge,
             callback(confirm: boolean) {
               if (confirm) {
-                graph.remove($edge);
-                graph.set('after-edge-selected', []);
-                // 提交事件
-                graph.emit('after-edge-selected');
-                graph.emit('after-edge-removed', $edge);
+                _this.graph.remove($edge);
+                _this.graph.set('after-edge-selected', []);
+                _this.graph.emit('after-edge-selected');
+                _this.graph.emit('after-edge-removed', $edge);
               }
             },
           });
         }
       }
     },
-  }
+  };
 
   G6.registerBehavior('delete-item', behavior);
 };

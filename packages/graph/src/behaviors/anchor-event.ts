@@ -1,13 +1,12 @@
-import { IG6GraphEvent, IGroup, IShape } from '@antv/g6';
+import { IG6GraphEvent, IGroup, IShape, Item } from '@antv/g6';
 import _ from 'lodash';
-// import { GraphUtil } from '../graph-util';
+import { AnchorData } from '../interfaces';
 import getColorByType from '../utils/getColorByType';
 
 let dragLog: number[] = [];
 let anchorNodeId: string | number | null = null;
 
 export default (anchor: IShape, group: IGroup, p: number[]) => {
-
   anchor.on('mouseenter', (_e: IG6GraphEvent) => {
     anchor.attr({
       cursor: 'crosshair',
@@ -16,13 +15,11 @@ export default (anchor: IShape, group: IGroup, p: number[]) => {
 
   anchor.on('dragstart', (e: IG6GraphEvent) => {
     dragLog = [e.x, e.y];
-    const bBox = group.get('item').getBBox();
-    const point = [
-      bBox.width * (p[0] - 0.5), // x
-      bBox.height * (p[1] - 0.5), // y
-    ];
 
-    const anchorData = _.get(e.target.cfg, 'anchorData');
+    const bBox = group.get('item').getBBox();
+    const point = [bBox.width * (p[0] - 0.5), bBox.height * (p[1] - 0.5)];
+
+    const anchorData = _.get(e.target.cfg, 'anchorData') as AnchorData;
     const { data, tag } = anchorData;
 
     const line = group.addShape('path', {
@@ -43,33 +40,36 @@ export default (anchor: IShape, group: IGroup, p: number[]) => {
     group.toFront();
     line.toFront();
 
-    const id = group.get('item').get('id');
+    const id = (group.get('item') as Item).get<string>('id');
     anchorNodeId = id;
   });
 
   anchor.on('drag', (e: IG6GraphEvent) => {
     const line = group.$getItem('dashed-line');
     const node = group.getFirst();
-    const canvasBox = node.get('canvasBBox');
-
+    const canvasBox = node.getCanvasBBox();
 
     if (!canvasBox || !line) {
       return;
     }
-    ;
 
     const diff = canvasBox.height / 2;
-    const pointStart = line.get('pointStart');
-
-    // const graph = GraphUtil.getGraph();
-    // const zoom = graph.getZoom() ;
+    const pointStart = line.get('pointStart') as number[];
     const zoom = 1;
 
-    const endPoint = [(e.x - canvasBox.x - canvasBox.width / 2) / zoom, (e.y - canvasBox.y - diff + 10) / zoom];
+    const endPoint = [
+      (e.x - canvasBox.x - canvasBox.width / 2) / zoom,
+      (e.y - canvasBox.y - diff + 10) / zoom,
+    ];
 
     line.toFront();
 
-    if (Math.sqrt(Math.pow(Math.abs(dragLog[0]) - Math.abs(e.x), 2) + Math.pow(Math.abs(dragLog[1]) - Math.abs(e.y), 2)) >= 10) {
+    if (
+      Math.sqrt(
+        Math.pow(Math.abs(dragLog[0]) - Math.abs(e.x), 2) +
+          Math.pow(Math.abs(dragLog[1]) - Math.abs(e.y), 2)
+      ) >= 10
+    ) {
       if (e.x >= dragLog[0]) {
         // 右下
         if (e.y >= dragLog[1]) {
@@ -108,7 +108,8 @@ export default (anchor: IShape, group: IGroup, p: number[]) => {
   });
 
   anchor.on('dragenter', (e: IG6GraphEvent) => {
-    if (e.target.cfg.nodeId !== anchorNodeId) {
+    const nodeId = e.target.cfg.nodeId as string;
+    if (nodeId !== anchorNodeId) {
       const { index } = e.target.cfg;
       if (group.getAllAnchorBg()[index]) {
         group.getAllAnchorBg()[index].attr('fillOpacity', 0.7);
@@ -117,8 +118,10 @@ export default (anchor: IShape, group: IGroup, p: number[]) => {
   });
 
   anchor.on('dragleave', (e: IG6GraphEvent) => {
-    if (e.target.cfg.nodeId !== anchorNodeId) {
-      const { index } = e.target.cfg;
+    const nodeId = e.target.cfg.nodeId as string;
+    const index = e.target.cfg.index as number;
+
+    if (nodeId !== anchorNodeId) {
       if (group.getAllAnchorBg()[index]) {
         group.getAllAnchorBg()[index].attr('fillOpacity', 1);
       }

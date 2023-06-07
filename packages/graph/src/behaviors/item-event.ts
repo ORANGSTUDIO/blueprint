@@ -1,7 +1,7 @@
+import { IElement } from '@antv/g-base';
+import { IGroup, IShape, Item } from '@antv/g6';
 import { LOGIC_STATEMENT_EDGE, LOGIC_VARIABLE_EDGE } from '../consts';
 import { IIGroup, IModelConfig, IShapeOptions } from '../interfaces';
-import { IGroup, IShape, INode } from '@antv/g6';
-import { IElement } from '@antv/g-base'
 import { ItemEventName } from '../interfaces/event';
 
 function setStyle(item: IElement, nodeStyle: any) {
@@ -9,9 +9,12 @@ function setStyle(item: IElement, nodeStyle: any) {
 }
 
 function getItemStyle(type: string, group: IGroup, state: string = 'hover') {
-  const item = group.get('item');
+  const item = group.get('item') as Item;
   const attrs = group.getFirst().attr();
-  const originStyle = type === 'node' ? item.get('originStyle') : item.get('originStyle')['edge-shape'];
+  const originStyle =
+    type === 'node'
+      ? item.get('originStyle')
+      : item.get('originStyle')['edge-shape'];
   const activeStyle = attrs.style[`${type}State:${state}`];
   const defaultStyle = attrs.style[`${type}State:default`];
 
@@ -27,15 +30,9 @@ function getItemStyle(type: string, group: IGroup, state: string = 'hover') {
 }
 
 const events: {
-  [itemEvent in ItemEventName]: (...args: any[]) => void
+  [itemEvent in ItemEventName]: (...args: any[]) => void;
 } & ThisType<IShapeOptions> = {
-  /**
-   * @description 锚点事件
-   * 显示/隐藏锚点
-   */
-  anchorShow(value: string | boolean, group: IIGroup) {
-    // 锚点全局开关
-    // changeData 时由于实例没销毁, 这里需要处理异常
+  anchorShow(value: string | boolean, group: IGroup) {
     if (group.get('children')) {
       const { anchorControls } = group.getFirst().cfg.attrs;
       if (anchorControls && anchorControls.hide) return false;
@@ -48,12 +45,7 @@ const events: {
     }
   },
 
-  /**
-   * @description 锚点激活事件
-   */
-  anchorActived(value: string | boolean, group: IIGroup) {
-    const _this = this;
-    // 锚点全局开关
+  anchorActived(value: string | boolean, group: IGroup) {
     if (group.get('children')) {
       const { anchorControls } = group.getFirst().cfg.attrs;
       if (anchorControls && anchorControls.hide) {
@@ -62,22 +54,21 @@ const events: {
     }
 
     if (value) {
-      const node = group.get('item') as INode;
+      const node = group.get('item') as Item;
       const nodeCfg = node.getModel() as IModelConfig;
       group.showAnchor(group);
 
-      if (!_this.getAnchorPoints) {
-        return
+      if (!this.getAnchorPoints) {
+        return;
       }
 
-      const points = _this.getAnchorPoints(nodeCfg);
+      const points = this.getAnchorPoints(nodeCfg);
       if (!points) {
-        return
+        return;
       }
 
       points.forEach((p, i) => {
         const bbox = group.getFirst().getBBox();
-        // 激活元素
         const hotspot = group.addShape('circle', {
           zIndex: 0,
           attrs: {
@@ -86,28 +77,26 @@ const events: {
             r: 0,
             opacity: 0.5,
             fill: '#1890ff',
-            // ...anchorHotsoptStyles,
           },
-          nodeId: group.get('item').get('id'),
+          nodeId: (group.get('item') as Item).get<string>('id'),
           className: 'node-anchor-bg',
           draggable: true,
           isAnchor: true,
           index: i,
         });
 
-        // 锚点动画
         hotspot.animate(
           { r: 11 },
           {
             duration: 200,
-          },
+          }
         );
 
-        group.sort(); // 将group中的元素按照 zIndex 从大到小排序
+        group.sort();
         group.anchorShapes.push(hotspot);
       });
 
-      group.anchorShapes.filter((item) => {
+      group.anchorShapes.filter(item => {
         if (item.get('className') === 'node-anchor') {
           item.toFront();
         }
@@ -123,72 +112,76 @@ const events: {
     }
   },
 
-  /**
-   * @description 边多状态事件
-   */
   nodeState(value: string | boolean, group: IIGroup) {
-    const _this = this;
     if (value === false) {
-      // 清除所有状态
-      events['nodeState:default'].call(_this, true, group);
+      events['nodeState:default'].call(this, true, group);
     } else {
-      events[`nodeState:${value}` as ItemEventName] && events[`nodeState:${value}` as ItemEventName].call(_this, value, group);
+      events[`nodeState:${value}` as ItemEventName] &&
+        events[`nodeState:${value}` as ItemEventName].call(this, value, group);
     }
   },
 
-  /**
-   * @description 节点恢复默认状态事件
-   */
   'nodeState:default'(value: string | boolean, group: IIGroup) {
-    const _this = this;
-
     if (value) {
-      const node = group.getChildByIndex(0);
-      const { defaultStyle } = getItemStyle.call(_this, 'node', group);
+      const node = group.getFirst();
+      const { defaultStyle } = getItemStyle.call(this, 'node', group);
       if (!defaultStyle) return;
       setStyle(node, defaultStyle);
     }
   },
 
-  /**
-   * @description 节点selected事件
-   */
   'nodeState:selected'(value: string | boolean, group: IIGroup) {
-    const _this = this as IShapeOptions;
-    const node = group.getChildByIndex(0);
-    const { activeStyle, defaultStyle } = getItemStyle.call(_this, 'node', group, 'selected');
-    if (!activeStyle) return;
+    const node = group.getFirst();
+    const { activeStyle, defaultStyle } = getItemStyle.call(
+      this,
+      'node',
+      group,
+      'selected'
+    );
+
+    if (!activeStyle) {
+      return;
+    }
+
     if (value) {
       setStyle(node, activeStyle);
     } else {
       setStyle(node, defaultStyle);
     }
   },
-  /**
-   * 搜索块命中的样式
-   * @param value
-   * @param group
-   */
-  'nodeState:matched'(value, group) {
-    const _this = this;
-    const node = group.getChildByIndex(0);
-    const { activeStyle, defaultStyle } = getItemStyle.call(_this, 'node', group, 'matched');
-    if (!activeStyle) return;
+
+  'nodeState:matched'(value: string | boolean, group: IGroup) {
+    const node = group.getFirst();
+    const { activeStyle, defaultStyle } = getItemStyle.call(
+      this,
+      'node',
+      group,
+      'matched'
+    );
+
+    if (!activeStyle) {
+      return;
+    }
+
     if (value) {
       setStyle(node, activeStyle);
     } else {
       setStyle(node, defaultStyle);
     }
   },
-  /**
-   * @description 节点hover事件
-   */
+
   'nodeState:hover'(value: string | boolean, group: IIGroup) {
-    const _this = this as IShapeOptions;
-    const node = group.getChildByIndex(0);
-    const { activeStyle, defaultStyle } = getItemStyle.call(_this, 'node', group, 'hover');
+    const node = group.getFirst();
+    const { activeStyle, defaultStyle } = getItemStyle.call(
+      this,
+      'node',
+      group,
+      'hover'
+    );
 
-    if (!activeStyle) return;
+    if (!activeStyle) {
+      return;
+    }
     if (value) {
       setStyle(node, activeStyle);
     } else {
@@ -196,38 +189,33 @@ const events: {
     }
   },
 
-  /**
-   * @description 边多状态事件
-   */
-  edgeState(value, group) {
-    // const item = group.get('item');
-    // const model = item.getModel();
-
+  edgeState(value: string | boolean, group: IGroup) {
     if (value === false) {
       events['edgeState:default'].call(this, true, group);
     } else {
-      events[`edgeState:${value}` as ItemEventName] && events[`edgeState:${value}` as ItemEventName].call(this, value, group);
+      events[`edgeState:${value}` as ItemEventName] &&
+        events[`edgeState:${value}` as ItemEventName].call(this, value, group);
     }
   },
 
-  /**
-   * @description 边恢复默认状态事件
-   */
-  'edgeState:default'(value, group) {
-    // const path = group.getChildByIndex(0);
-    const item = group.get('item');
+  'edgeState:default'(value: string | boolean, group: IGroup) {
+    const item = group.get('item') as Item;
     const model = item.getModel();
     const { type } = model;
 
     if (type === LOGIC_STATEMENT_EDGE) {
       if (value) {
-        const edge = group.getChildByIndex(0);
+        const edge = group.getFirst();
         edge.hide();
       }
     } else if (type === LOGIC_VARIABLE_EDGE) {
       const children = group.get('children');
-      const pathShapeBg = children.find((path: IElement) => path.get('name') === 'path-shape-bg');
-      const pathShape = children.find((path: IElement) => path.get('name') === 'path-shape');
+      const pathShapeBg = children.find(
+        (path: IElement) => path.get('name') === 'path-shape-bg'
+      );
+      const pathShape = children.find(
+        (path: IElement) => path.get('name') === 'path-shape'
+      );
 
       if (value) {
         pathShape.attr({
@@ -238,12 +226,9 @@ const events: {
     }
   },
 
-  /**
-   * @description edge hover事件
-   */
-  'edgeState:hover'(value, group) {
-    const path = group.getChildByIndex(0);
-    const item = group.get('item');
+  'edgeState:hover'(value: string | boolean, group: IGroup) {
+    const path = group.getFirst();
+    const item = group.get('item') as Item;
     const model = item.getModel();
     const { type } = model;
 
@@ -255,8 +240,12 @@ const events: {
       }
     } else if (type === LOGIC_VARIABLE_EDGE) {
       const children = group.get('children');
-      const pathShapeBg = children.find((path: IElement) => path.get('name') === 'path-shape-bg');
-      const pathShape = children.find((path: IElement) => path.get('name') === 'path-shape');
+      const pathShapeBg = children.find(
+        (path: IElement) => path.get('name') === 'path-shape-bg'
+      );
+      const pathShape = children.find(
+        (path: IElement) => path.get('name') === 'path-shape'
+      );
 
       if (value) {
         pathShape.attr({
@@ -272,12 +261,9 @@ const events: {
     }
   },
 
-  /**
-   * @description edge 选中事件
-   */
-  'edgeState:selected'(value, group) {
-    const path = group.getChildByIndex(0);
-    const item = group.get('item');
+  'edgeState:selected'(value: string | boolean, group: IGroup) {
+    const path = group.getFirst();
+    const item = group.get('item') as Item;
     const model = item.getModel();
     const { type } = model;
 
@@ -289,8 +275,12 @@ const events: {
       }
     } else if (type === LOGIC_VARIABLE_EDGE) {
       const children = group.get('children');
-      const pathShapeBg = children.find((path: IElement) => path.get('name') === 'path-shape-bg');
-      const pathShape = children.find((path: IElement) => path.get('name') === 'path-shape');
+      const pathShapeBg = children.find(
+        (path: IElement) => path.get('name') === 'path-shape-bg'
+      );
+      const pathShape = children.find(
+        (path: IElement) => path.get('name') === 'path-shape'
+      );
 
       if (value) {
         pathShape.attr({
@@ -313,14 +303,12 @@ const events: {
     const imgShapes = imgShapeGroup.getChildren() || [];
 
     if (value) {
-      imgShapes.forEach((imgShape) => {
-        // imgShape.attr({ img: require('../img/rightarrow3.svg') });
+      imgShapes.forEach(imgShape => {
         imgShape.attr({ img: '../img/rightarrow3.svg' });
       });
       path.show();
     } else {
-      imgShapes.forEach((imgShape) => {
-        // imgShape.attr({ img: require('../img/rightarrow2.svg') });
+      imgShapes.forEach(imgShape => {
         imgShape.attr({ img: '../img/rightarrow2.svg' });
       });
       path.hide();
