@@ -1,12 +1,12 @@
-import { IG6GraphEvent, INode } from '@antv/g6';
+import { IG6GraphEvent, IGroup, INode, IShape } from '@antv/g6';
 import _ from 'lodash';
 // import { GraphUtil } from '../graph-util';
 import getColorByType from '../utils/getColorByType';
 
 let dragLog: number[] = [];
-let anchorNodeId = null;
+let anchorNodeId: string | number | null = null;
 
-export default (anchor, group, p) => {
+export default (anchor: IShape, group: IGroup, p: [number, number]) => {
 
   anchor.on('mouseenter', (e: IG6GraphEvent) => {
     anchor.attr({
@@ -49,7 +49,7 @@ export default (anchor, group, p) => {
 
   anchor.on('drag', (e: IG6GraphEvent) => {
     const line = group.$getItem('dashed-line');
-    const node = group.getFirst() as INode;
+    const node = group.getFirst();
     const canvasBox = node.get('canvasBBox');
 
 
