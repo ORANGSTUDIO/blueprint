@@ -1,8 +1,14 @@
 import { IG6 } from '../interfaces';
-import { IG6GraphEvent } from '@antv/g6';
+import { BehaviorOption, IG6GraphEvent } from '@antv/g6';
+import { BehaviorOptionThis } from '../interfaces/behavior';
+import { WithRequiredProperty } from '../interfaces/util';
 
 export default (G6: IG6) => {
-  G6.registerBehavior('canvas-event', {
+  type IBehaviorOption = WithRequiredProperty<BehaviorOption,
+    'getDefaultCfg' | 'getEvents' | 'shouldBegin'>
+
+  const behavior: IBehaviorOption & ThisType<BehaviorOptionThis<{
+  } & IBehaviorOption>> = {
     getDefaultCfg() {
       return {};
     },
@@ -31,5 +37,7 @@ export default (G6: IG6) => {
       // logicEditorStore.canvasPosition = [e.canvasX / 2, e.canvasY / 2];
       this.graph.emit('on-canvas-dragend', e);
     },
-  });
+  }
+
+  G6.registerBehavior('canvas-event', behavior);
 };
