@@ -1,15 +1,12 @@
-import { BehaviorOption, Graph, IG6GraphEvent } from '@antv/g6';
+import { IG6GraphEvent } from '@antv/g6';
 import { IG6 } from '../interfaces';
 import { BehaviorOptionThis } from '../interfaces/behavior';
-import { WithRequiredProperty } from '../interfaces/util';
 
 export default (G6: IG6) => {
-  type IBehaviorOption = WithRequiredProperty<BehaviorOption,
-    'getDefaultCfg' | 'getEvents' | 'shouldBegin'>
 
-  const behavior: IBehaviorOption & ThisType<BehaviorOptionThis<{
+  const behavior: BehaviorOptionThis<'getDefaultCfg' | 'getEvents' | 'shouldBegin', {
     _clearSelected: () => void
-  } & IBehaviorOption>> = {
+  }> = {
     getDefaultCfg() {
       return {
         // editMode: false, // 当前的编辑状态
@@ -26,11 +23,11 @@ export default (G6: IG6) => {
         'edge:dragover': 'onDragover',
       };
     },
-    shouldBegin(e?: IG6GraphEvent) {
+    shouldBegin(_e?: IG6GraphEvent) {
       return true;
     },
-    onDragover(e: IG6GraphEvent) {},
-    onCanvasClick(e: IG6GraphEvent) {
+    onDragover(_e: IG6GraphEvent) {},
+    onCanvasClick(_e: IG6GraphEvent) {
       this._clearSelected();
     },
     onEdgeClick(e: IG6GraphEvent) {

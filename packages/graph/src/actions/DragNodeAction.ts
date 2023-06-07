@@ -1,8 +1,10 @@
 import Action from "../Action";
 
-import { IEdge, IG6GraphEvent, IGraph, INode } from '@antv/g6';
+import { BehaviorOption, IEdge, IG6GraphEvent, IGraph, INode } from '@antv/g6';
 import _ from 'lodash';
 import { AnchorTag, INodeConfig } from '../interfaces/';
+import { BehaviorOptionThis } from "../interfaces/behavior";
+import { IGroup, Point } from "@antv/g-base";
 
 /**
  * 计算鼠标位置与矩形最小距离
@@ -23,7 +25,7 @@ function calculateMinDistance(mouseX: number, mouseY: number, edge: IEdge) {
   };
 }
 
-function findMinDistanceEdge(mouseX, mouseY, allEdges) {
+function findMinDistanceEdge(mouseX: number, mouseY: number, allEdges: IEdge[]) {
   const all: Array<{
     target: IEdge;
     distance: number;
@@ -35,9 +37,25 @@ function findMinDistanceEdge(mouseX, mouseY, allEdges) {
 export default class DragNodeAction extends Action {
   public name: string = "drag-shadow-node";
 
-  public behaviorOption() {
+  public behaviorOption(): BehaviorOption {
     const self = this
-    return {
+    const option: BehaviorOptionThis<'getDefaultCfg' | 'getEvents' | 'shouldBegin', {
+      _clearSelected: () => void;
+      _nodeOnDragStart: (e: IG6GraphEvent, group: IGroup) => void;
+      _nodeOnDrag: (e: IG6GraphEvent, group: IGroup) => void;
+      _nodeOnDragEnd: (e: IG6GraphEvent, group: IGroup) => void;
+      _addShadowNode: (e: IG6GraphEvent, group: IGroup) => void;
+      getNearestEdge: (e: IG6GraphEvent) => void;
+      _dragNodeModeCheck: () => boolean;
+      distance: number[];
+      dragStartNode: {
+        id?: number | string | undefined;
+        anchorIndex: number;
+        anchorData: any;
+        group?: IGroup;
+      },
+      origin: Point
+    }> = {
       getDefaultCfg() {
         return {
           isGragging: false,
@@ -61,14 +79,15 @@ export default class DragNodeAction extends Action {
           'node:dragenter': 'onDragOver',
         };
       },
-      shouldBegin(e) {
+      shouldBegin(_e?: IG6GraphEvent) {
         return true;
       },
-      onDragOver(e: IG6GraphEvent) {},
+      onDragOver(_e: IG6GraphEvent) {},
       // 鼠标按下显示锚点光圈
-      onMousedown(e) {
+      onMousedown(e: IG6GraphEvent) {
         if (!this.shouldBegin(e)) return;
-        this._clearSelected(e);
+        if (!e.item) return;
+        this._clearSelected();
         if (e.target.cfg.isAnchor) {
           // 拖拽锚点
           this.dragTarget = 'anchor';
@@ -77,7 +96,7 @@ export default class DragNodeAction extends Action {
             anchorIndex: e.target.cfg.index,
             anchorData: e.target.cfg.anchorData, // 把当前点击的锚点也挂载上去
           };
-          const nodes = this.graph.findAll('node', (node) => node);
+          const nodes = this.graph.findAll('node', (node) => !!node);
 
           nodes.forEach((node) => {
             node.setState('anchorActived', true);
@@ -88,12 +107,12 @@ export default class DragNodeAction extends Action {
             const index = e.target.cfg.anchorData.index;
             const edges = this.graph.getEdges();
             const exist = edges.find(
-              (edge) => edge._cfg.model.source === e.target.cfg.nodeId && edge._cfg.model.sourceAnchor === index,
+              (edge) => edge._cfg && edge._cfg.model && edge._cfg.model.source === e.target.cfg.nodeId && edge._cfg.model.sourceAnchor === index,
             );
             if (exist) {
               if (!this.shouldBegin(e)) return;
               this.isGragging = false;
-              const nodes = this.graph.findAll('node', (node) => node);
+              const nodes = this.graph.findAll('node', (node) => !!node);
               nodes.forEach((node) => {
                 node.clearStates('anchorActived');
               });
@@ -103,10 +122,10 @@ export default class DragNodeAction extends Action {
         }
         this.graph.emit('on-node-mousedown', e);
       },
-      onMouseup(e) {
+      onMouseup(e: IG6GraphEvent) {
         if (!this.shouldBegin(e)) return;
         if (this.dragTarget === 'anchor') {
-          const nodes = this.graph.findAll('node', (node) => node);
+          const nodes = this.graph.findAll('node', (node) => !!node);
 
           nodes.forEach((node) => {
             node.clearStates('anchorActived');
@@ -115,8 +134,9 @@ export default class DragNodeAction extends Action {
         this.graph.emit('on-node-mouseup', e);
       },
       // 拖拽开始
-      onDragStart(e) {
+      onDragStart(e: IG6GraphEvent) {
         if (!this.shouldBegin(e)) return;
+        if (!e.item) return;
         const group = e.item.getContainer();
 
         this.isGragging = true;
@@ -138,10 +158,8 @@ export default class DragNodeAction extends Action {
       // 拖拽中
       onDrag(e: IG6GraphEvent) {
         if (!this.shouldBegin(e)) return;
+        if (!e.item) return;
 
-        if (!e.item) {
-          return
-        }
         if (this.isGragging) {
           const group = e.item.getContainer();
 
@@ -152,13 +170,15 @@ export default class DragNodeAction extends Action {
         }
       },
       // 拖拽结束
-      onDragEnd(e) {
+      onDragEnd(e: IG6GraphEvent) {
         if (!this.shouldBegin(e)) return;
+        if (!e.item) return;
+
         const group = e.item.getContainer();
 
         this.isGragging = false;
         if (this.dragTarget === 'anchor') {
-          const nodes = this.graph.findAll('node', (node) => node);
+          const nodes = this.graph.findAll('node', (node) => !!node);
 
           nodes.forEach((node) => {
             node.clearStates('anchorActived');
@@ -168,17 +188,22 @@ export default class DragNodeAction extends Action {
         }
       },
       // 锚点拖拽结束添加边
-      onDrop(e) {
+      onDrop(e: IG6GraphEvent) {
         if (!this.shouldBegin(e)) return;
+        if (!e.item) return;
         // e.item 当前拖拽节点 | e.target 当前释放节点
         if (this.dragStartNode.id && e.target.cfg.isAnchor && this.dragStartNode.id !== e.target.cfg.nodeId) {
+          if (!this.dragStartNode.group) {
+            return
+          }
+
           const sourceNode = this.dragStartNode.group.get('item');
           const targetNode = e.item.getContainer().get('item');
           const { singleEdge } = sourceNode.getModel(); // 同个source和同个target只能有1条线
           const targetAnchorIndex = e.target.get('index');
           const edges = sourceNode.getOutEdges();
 
-          const hasLinked = edges.find((edge) => {
+          const hasLinked = edges.find((edge: IEdge) => {
             // sourceAnchorIndex === targetAnchorIndex, edge.source.id === source.id, edget.target.id === target.id
             if (
               (edge.get('source').get('id') === sourceNode.get('id') &&
@@ -206,7 +231,7 @@ export default class DragNodeAction extends Action {
       /**
        * @description 判断当前画布模式是否启用了内置的 drag-node, 因为有冲突
        */
-      _dragNodeModeCheck() {
+      _dragNodeModeCheck():  boolean {
         const currentMode = this.graph.get('modes')[this.graph.getCurrentMode()];
 
         if (currentMode.includes('drag-node')) {
@@ -218,7 +243,7 @@ export default class DragNodeAction extends Action {
       /**
        * @description 节点拖拽开始事件
        */
-      _nodeOnDragStart(e, group) {
+      _nodeOnDragStart(e: IG6GraphEvent, group: IGroup) {
         this._dragNodeModeCheck();
         this._addShadowNode(e, group);
       },
@@ -226,7 +251,7 @@ export default class DragNodeAction extends Action {
       /**
        * @description 添加虚拟节点
        */
-      _addShadowNode(e, group) {
+      _addShadowNode(e: IG6GraphEvent, group: IGroup) {
         const item = group.get('item');
         const model = item.get('model');
         const { width, height, centerX, centerY } = item.getBBox();
@@ -256,12 +281,16 @@ export default class DragNodeAction extends Action {
       /**
        * @description 节点拖拽事件
        */
-      _nodeOnDrag(e, group) {
+      _nodeOnDrag(e: IG6GraphEvent, group: IGroup) {
         // 记录鼠标拖拽时与图形中心点坐标的距离
         const item = group.get('item');
         const pathAttrs = group.getFirst();
-        const { width, height, centerX, centerY } = item.getBBox();
+        const { centerX, centerY } = item.getBBox();
         const shadowNode = pathAttrs.cfg.xShapeNode ? group.$getItem('shadow-node') : null;
+
+        if (!shadowNode) {
+          return
+        }
 
         shadowNode.attr({
           x: e.x - centerX - this.distance[0],
@@ -275,13 +304,18 @@ export default class DragNodeAction extends Action {
       /**
        * @description 节点拖拽结束事件
        */
-      _nodeOnDragEnd(e, group) {
+      _nodeOnDragEnd(e: IG6GraphEvent, group: IGroup) {
         const { graph } = this;
+        if (!e.item) return;
         const model = e.item.getModel();
 
         const shadowNode = group.getFirst().cfg.xShapeNode ? group.$getItem('shadow-node') : null;
 
         if (shadowNode) {
+          if (!model.x || !model.y) {
+            return
+          }
+
           const x = e.x - this.origin.x + model.x;
           const y = e.y - this.origin.y + model.y;
           const pos = {
@@ -355,7 +389,7 @@ export default class DragNodeAction extends Action {
         this.graph.emit('on-node-dragend', e);
       },
       // 清空已选的边
-      _clearSelected(e) {
+      _clearSelected() {
         const selectedEdges = this.graph.findAllByState('edge', 'edgeState:selected');
 
         selectedEdges.forEach((edge) => {
@@ -422,5 +456,6 @@ export default class DragNodeAction extends Action {
         }
       },
     };
+    return option
   }
 }

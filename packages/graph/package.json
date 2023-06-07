@@ -10,7 +10,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@antv/g6": "^4.8.14",
+    "@antv/g6": "4.8.14",
+    "@antv/g-base": "0.5.15",
     "json-schema": "^0.4.0",
     "lodash": "^4.17.21"
   },

@@ -1,5 +1,5 @@
-import { IGroup, ShapeOptions, ShapeStyle, Item, ModelConfig, NodeConfig } from '@antv/g6';
-import { IG6, IIGroup, IModelConfig, INodeConfig, IShapeOptions } from '../../interfaces';
+import { IGroup, ShapeStyle, Item, ModelConfig } from '@antv/g6';
+import { IG6, IIGroup, IShapeOptions } from '../../interfaces';
 import { BlockNames_DTS } from '../../interfaces/service';
 import anchorEvent from '../../behaviors/anchor-event';
 import itemEvents from '../../behaviors/item-event';
@@ -31,7 +31,7 @@ export default (G6: IG6) => {
       cfg.nodeHeight = 132;
     },
 
-    assembleShape(cfg?: ModelConfig, group?: IGroup) {
+    assembleShape(_cfg?: ModelConfig, _group?: IGroup) {
     },
 
     getShapeStyle(cfg: ModelConfig) {
@@ -183,7 +183,7 @@ export default (G6: IG6) => {
       return keyShape;
     },
 
-    update(cfg: ModelConfig, node: Item, updateType?: any) {
+    update(_cfg: ModelConfig, _node: Item, _updateType?: any) {
     },
     // update: null,
 
@@ -226,7 +226,7 @@ export default (G6: IG6) => {
       }
     },
 
-    getAnchorPoints(cfg?: ModelConfig): any[] {
+    getAnchorPoints(_cfg?: ModelConfig): any[] {
       return [
         [0, 0],
         [0, 0.5],

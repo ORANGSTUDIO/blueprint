@@ -1,9 +1,10 @@
 import { IG6 } from '../interfaces';
 import { IG6GraphEvent, Item } from '@antv/g6';
 import { Graph } from '@antv/g6';
+import { BehaviorOptionThis } from '../interfaces/behavior';
 
 export default (G6: IG6) => {
-  G6.registerBehavior('delete-item', {
+  const behavior: BehaviorOptionThis<'getEvents' | 'shouldBegin'> = {
     getEvents() {
       return {
         'keydown': 'onKeydown',
@@ -28,7 +29,7 @@ export default (G6: IG6) => {
 
           graph.emit('before-node-removed', {
             target: $node,
-            callback(confirm) {
+            callback(confirm: boolean) {
               if (confirm) {
                 graph.remove($node);
                 // graph.set('after-node-selected', []);
@@ -47,7 +48,7 @@ export default (G6: IG6) => {
 
           graph.emit('before-edge-removed', {
             target: $edge,
-            callback(confirm) {
+            callback(confirm: boolean) {
               if (confirm) {
                 graph.remove($edge);
                 graph.set('after-edge-selected', []);
@@ -60,5 +61,7 @@ export default (G6: IG6) => {
         }
       }
     },
-  });
+  }
+
+  G6.registerBehavior('delete-item', behavior);
 };

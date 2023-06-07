@@ -1,7 +1,11 @@
+import { IG6GraphEvent } from '@antv/g6';
 import { IG6 } from '../interfaces';
+import { BehaviorOptionThis } from '../interfaces/behavior';
 
 export default (G6: IG6) => {
-  G6.registerBehavior('select-node', {
+  const behavior: BehaviorOptionThis<'getDefaultCfg' | 'getEvents' | 'shouldBegin', {
+    _clearSelected: () => void;
+  }> = {
     getDefaultCfg() {
       return {
         multiple: false,
@@ -18,12 +22,13 @@ export default (G6: IG6) => {
         'node:mouseleave': 'onNodeMouseLeave',
       };
     },
-    shouldBegin(e) {
+    shouldBegin(_e) {
       return true;
     },
 
-    onNodeClick(e) {
+    onNodeClick(e: IG6GraphEvent) {
       if (!this.shouldBegin(e)) return;
+      if (!e.item) return;
       // 先将所有当前是 click 状态的节点/edge 置为非 selected 状态
       this._clearSelected();
       e.item.toFront();
@@ -35,8 +40,9 @@ export default (G6: IG6) => {
       // 将点击事件发送给 graph 实例
       this.graph.emit('after-node-selected', e);
     },
-    onDblClick(e) {
+    onDblClick(e: IG6GraphEvent) {
       if (!this.shouldBegin(e)) return;
+      if (!e.item) return;
       // 先将所有当前是 click 状态的节点/edge 置为非 selected 状态
       this._clearSelected();
       e.item.toFront();
@@ -45,26 +51,28 @@ export default (G6: IG6) => {
       // 将点击事件发送给 graph 实例
       this.graph.emit('after-node-dblclick', e);
     },
-    onCanvasClick(e) {
+    onCanvasClick(e: IG6GraphEvent) {
       if (!this.shouldBegin(e)) return;
       this._clearSelected();
       this.graph.emit('on-canvas-click', e);
     },
     // hover node
-    onNodeMouseEnter(e) {
+    onNodeMouseEnter(e: IG6GraphEvent) {
       if (!this.shouldBegin(e)) return;
+      if (!e.item) return;
       if (!e.item.hasState('nodeState:selected') && !e.item.hasState('nodeState:matched')) {
         e.item.setState('nodeState', 'hover');
       }
       this.graph.emit('on-node-mouseenter', e);
     },
-    onNodeMouseMove(e) {
+    onNodeMouseMove(e: IG6GraphEvent) {
       if (!this.shouldBegin(e)) return;
       this.graph.emit('on-node-mousemove', e);
     },
     // 移出 node
-    onNodeMouseLeave(e) {
+    onNodeMouseLeave(e: IG6GraphEvent) {
       if (!this.shouldBegin(e)) return;
+      if (!e.item) return;
       // hasState 判断当前元素是否存在某种状态
       if (!e.item.hasState('nodeState:selected') && !e.item.hasState('nodeState:matched')) {
         e.item.clearStates('nodeState:hover');
@@ -83,5 +91,6 @@ export default (G6: IG6) => {
       });
       // this.graph.emit('after-node-selected');
     },
-  });
+  }
+  G6.registerBehavior('select-node', behavior);
 };

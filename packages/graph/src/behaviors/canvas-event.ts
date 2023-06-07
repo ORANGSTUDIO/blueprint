@@ -1,18 +1,13 @@
 import { IG6 } from '../interfaces';
-import { BehaviorOption, IG6GraphEvent } from '@antv/g6';
+import { IG6GraphEvent } from '@antv/g6';
 import { BehaviorOptionThis } from '../interfaces/behavior';
-import { WithRequiredProperty } from '../interfaces/util';
 
 export default (G6: IG6) => {
-  type IBehaviorOption = WithRequiredProperty<BehaviorOption,
-    'getDefaultCfg' | 'getEvents' | 'shouldBegin'>
-
-  const behavior: IBehaviorOption & ThisType<BehaviorOptionThis<{
-  } & IBehaviorOption>> = {
+  const behavior: BehaviorOptionThis<'getDefaultCfg' | 'getEvents' | 'shouldBegin'> = {
     getDefaultCfg() {
       return {};
     },
-    shouldBegin(e) {
+    shouldBegin(_e) {
       return true;
     },
     getEvents() {

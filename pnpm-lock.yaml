@@ -60,8 +60,11 @@ importers:
 
   packages/graph:
     dependencies:
+      '@antv/g-base':
+        specifier: 0.5.15
+        version: 0.5.15
       '@antv/g6':
-        specifier: ^4.8.14
+        specifier: 4.8.14
         version: 4.8.14
       json-schema:
         specifier: ^0.4.0
@@ -80,7 +83,7 @@ importers:
 packages:
 
   /@ant-design/colors@4.0.5:
-    resolution: {integrity: sha512-3mnuX2prnWOWvpFTS2WH2LoouWlOgtnIpc6IarWN6GOzzLF8dW/U8UctuvIPhoboETehZfJ61XP+CGakBEPJ3Q==}
+    resolution: {integrity: sha1-19EA11Rcyo9iSVRgSmiS/Ei6Wq4=}
     dependencies:
       tinycolor2: 1.6.0
     dev: false
@@ -271,7 +274,7 @@ packages:
     dev: false
 
   /@antv/matrix-util@3.0.4:
-    resolution: {integrity: sha512-BAPyu6dUliHcQ7fm9hZSGKqkwcjEDVLVAstlHULLvcMZvANHeLXgHEgV7JqcAV/GIhIz8aZChIlzM1ZboiXpYQ==}
+    resolution: {integrity: sha1-6hPxWKovtLovuNa2tWHsRn6jrCA=}
     dependencies:
       '@antv/util': 2.0.17
       gl-matrix: 3.4.3
@@ -279,7 +282,7 @@ packages:
     dev: false
 
   /@antv/matrix-util@3.1.0-beta.3:
-    resolution: {integrity: sha512-W2R6Za3A6CmG51Y/4jZUM/tFgYSq7vTqJL1VD9dKrvwxS4sE0ZcXINtkp55CdyBwJ6Cwm8pfoRpnD4FnHahN0A==}
+    resolution: {integrity: sha1-4GHej6e+BGBaFVxpzFzpCC7t3e4=}
     dependencies:
       '@antv/util': 2.0.17
       gl-matrix: 3.4.3
@@ -287,7 +290,7 @@ packages:
     dev: false
 
   /@antv/path-util@2.0.15:
-    resolution: {integrity: sha512-R2VLZ5C8PLPtr3VciNyxtjKqJ0XlANzpFb5sE9GE61UQqSRuSVSzIakMxjEPrpqbgc+s+y8i+fmc89Snu7qbNw==}
+    resolution: {integrity: sha1-pvaR38i3vOW+fwqrtb1hSWQyVjE=}
     dependencies:
       '@antv/matrix-util': 3.0.4
       '@antv/util': 2.0.17
@@ -303,7 +306,7 @@ packages:
     dev: false
 
   /@antv/util@2.0.17:
-    resolution: {integrity: sha512-o6I9hi5CIUvLGDhth0RxNSFDRwXeywmt6ExR4+RmVAzIi48ps6HUy+svxOCayvrPBN37uE6TAc2KDofRo0nK9Q==}
+    resolution: {integrity: sha1-6O9CrKeJKBWyKSafPdEMazx1l6k=}
     dependencies:
       csstype: 3.1.2
       tslib: 2.5.2
@@ -579,7 +582,7 @@ packages:
     dev: false
 
   /@types/d3-timer@2.0.1:
-    resolution: {integrity: sha512-TF8aoF5cHcLO7W7403blM7L1T+6NF3XMyN3fxyUolq2uOcFeicG/khQg/dGxiCJWoAcmYulYN7LYSRKO54IXaA==}
+    resolution: {integrity: sha1-/7ZiDSkGJPNyaqNiwMiktEyNcgA=}
     dev: false
 
   /@types/json-schema@7.0.12:
@@ -797,7 +800,7 @@ packages:
     dev: false
 
   /color-name@1.1.3:
-    resolution: {integrity: sha512-72fSenhMw2HZMTVHeCA9KCmpEIbzWiQsjN+BHcBbS9vr1mtt+vJjPdksIBNUmKAW8TFUDPJK5SUU3QhE9NEXDw==}
+    resolution: {integrity: sha1-p9BVi9icQveV3UIyj3QIMcpTvCU=}
     dev: false
 
   /color-name@1.1.4:
@@ -812,7 +815,7 @@ packages:
     dev: false
 
   /color@3.2.1:
-    resolution: {integrity: sha512-aBl7dZI9ENN6fUGC7mWpMTPNHmWUSNan9tuWN6ahh5ZLNk9baLJOnSMlrQkHcrfFgz2/RigjUVAjdx36VcemKA==}
+    resolution: {integrity: sha1-NUTcGYyvRJDD7MmnkLVP6f9F4WQ=}
     dependencies:
       color-convert: 1.9.3
       color-string: 1.9.1
@@ -831,15 +834,15 @@ packages:
     dev: false
 
   /d3-dispatch@2.0.0:
-    resolution: {integrity: sha512-S/m2VsXI7gAti2pBoLClFFTMOO1HTtT0j99AuXLoGFKO6deHDdnv6ZGTxSTTUTgO1zVcv82fCOtDjYK4EECmWA==}
+    resolution: {integrity: sha1-ihjhb3bdP8rvQhY8l7kmqptV588=}
     dev: false
 
   /d3-ease@1.0.7:
-    resolution: {integrity: sha512-lx14ZPYkhNx0s/2HX5sLFUI3mbasHjSSpwO/KaaNACweVwxUruKyWVcb293wMv1RqTPZyZ8kSZ2NogUZNcLOFQ==}
+    resolution: {integrity: sha1-moNIkO+LiujFWLL+Vb1X9Zk7heI=}
     dev: false
 
   /d3-force@2.1.1:
-    resolution: {integrity: sha512-nAuHEzBqMvpFVMf9OX75d00OxvOXdxY+xECIXjW6Gv8BRrXu6gAWbv/9XKrvfJ5i5DCokDW7RYE50LRoK092ew==}
+    resolution: {integrity: sha1-8gzL8ebJ6ArdGSbwm1H2hqi8CTc=}
     dependencies:
       d3-dispatch: 2.0.0
       d3-quadtree: 2.0.0
@@ -847,22 +850,22 @@ packages:
     dev: false
 
   /d3-interpolate@3.0.1:
-    resolution: {integrity: sha512-3bYs1rOD33uo8aqJfKP3JWPAibgw8Zm2+L9vBKEHJ2Rg+viTR7o5Mmv5mZcieN+FRYaAOWX5SJATX6k1PWz72g==}
+    resolution: {integrity: sha1-PEeqWzLFs9+1bvP9Q0IHimMrQA0=}
     engines: {node: '>=12'}
     dependencies:
       d3-color: 3.1.0
     dev: false
 
   /d3-quadtree@2.0.0:
-    resolution: {integrity: sha512-b0Ed2t1UUalJpc3qXzKi+cPGxeXRr4KU9YSlocN74aTzp6R/Ud43t79yLLqxHRWZfsvWXmbDWPpoENK1K539xw==}
+    resolution: {integrity: sha1-7brQRc74hwH2/uOu6Ok/szLTD50=}
     dev: false
 
   /d3-timer@1.0.10:
-    resolution: {integrity: sha512-B1JDm0XDaQC+uvo4DT79H0XmBskgS3l6Ve+1SBCfxgmtIb1AVrPIoqd+nPSv+loMX8szQ0sVUhGngL7D5QPiXw==}
+    resolution: {integrity: sha1-3+dripF0iDGxO22ceT/71QjdneU=}
     dev: false
 
   /d3-timer@2.0.0:
-    resolution: {integrity: sha512-TO4VLh0/420Y/9dO3+f9abDEFYeCUr2WZRlxJvbp4HPTQcSylXNiL6yZa9FIUvV1yRiFufl1bszTCLDqv9PWNA==}
+    resolution: {integrity: sha1-BV7bHRcM/jGrLaiWje7pQLVmI+Y=}
     dev: false
 
   /dagre-compound@0.0.11(dagre@0.8.5):
@@ -875,7 +878,7 @@ packages:
     dev: false
 
   /dagre@0.8.5:
-    resolution: {integrity: sha512-/aTqmnRta7x7MCCpExk7HQL2O4owCT2h8NT//9I1OQ9vt29Pa0BzSAkR5lwFUcQ7491yVi/3CXU9jQ5o0Mn2Sw==}
+    resolution: {integrity: sha1-ujCwBV2sErbB/MJHgXRCd30Gr+4=}
     dependencies:
       graphlib: 2.1.8
       lodash: 4.17.21
@@ -923,11 +926,11 @@ packages:
     resolution: {integrity: sha512-Rfkk/Mp/DL7JVje3u18FxFujQlTNR2q6QfMSMB7AvCBx91NGj/ba3kCfza0f6dVDbw7YlRf/nDrn7pQrCCyQ/w==}
 
   /eventemitter3@4.0.7:
-    resolution: {integrity: sha512-8guHBZCwKnFhYdHr2ysuRWErTwhoN2X8XELRlrRwpmfeY2jjuUN4taQMsULKUVo1K4DvZl+0pgfyoysHxvmvEw==}
+    resolution: {integrity: sha1-Lem2j2Uo1WRO9cWVJqG0oHMGFp8=}
     dev: false
 
   /fast-deep-equal@3.1.3:
-    resolution: {integrity: sha512-f3qQ9oQy9j2AhBe/H9VC91wLmKBCCU/gDOnKNAYG5hswO7BLKj09Hc5HYNz9cGI++xlpDCIgDaitVs03ATR84Q==}
+    resolution: {integrity: sha1-On1WtVnWy8PrUSMlJE5hmmXGxSU=}
     dev: false
 
   /fecha@4.2.3:
@@ -935,7 +938,7 @@ packages:
     dev: false
 
   /fsevents@2.3.2:
-    resolution: {integrity: sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA==}
+    resolution: {integrity: sha1-ilJveLj99GI7cJ4Ll1xSwkwC/Ro=}
     engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
     os: [darwin]
     requiresBuild: true
@@ -943,15 +946,15 @@ packages:
     optional: true
 
   /gl-matrix@3.4.3:
-    resolution: {integrity: sha512-wcCp8vu8FT22BnvKVPjXa/ICBWRq/zjFfdofZy1WSpQZpphblv12/bOQLBC1rMM7SGOFS9ltVmKOHil5+Ml7gA==}
+    resolution: {integrity: sha1-/BGR6DIACf1NIOkzlZXGBB3cIsk=}
     dev: false
 
   /gl-vec2@1.3.0:
-    resolution: {integrity: sha512-YiqaAuNsheWmUV0Sa8k94kBB0D6RWjwZztyO+trEYS8KzJ6OQB/4686gdrf59wld4hHFIvaxynO3nRxpk1Ij/A==}
+    resolution: {integrity: sha1-g9Ry7UYDTejgnLyFcSP7bIHFEZk=}
     dev: false
 
   /graphlib@2.1.8:
-    resolution: {integrity: sha512-jcLLfkpoVGmH7/InMC/1hIvOPSUh38oJtGhvrOFGzioE1DZ+0YW16RgmOJhHiuWTvGiJQ9Z1Ik43JvkRPRvE+A==}
+    resolution: {integrity: sha1-V2HUFHN4cAhMkux7XbywWSydNdo=}
     dependencies:
       lodash: 4.17.21
     dev: false
@@ -962,7 +965,7 @@ packages:
     dev: true
 
   /insert-css@2.0.0:
-    resolution: {integrity: sha512-xGq5ISgcUP5cvGkS2MMFLtPDBtrtQPSFfC6gA6U8wHKqfjTIMZLZNxOItQnoSjdOzlXOLU/yD32RKC4SvjNbtA==}
+    resolution: {integrity: sha1-610Ql7dUL0x56jBg067gfQU4gPQ=}
     dev: false
 
   /is-any-array@2.0.1:
@@ -1096,7 +1099,7 @@ packages:
     dev: false
 
   /regl@1.7.0:
-    resolution: {integrity: sha512-bEAtp/qrtKucxXSJkD4ebopFZYP0q1+3Vb2WECWv/T8yQEgKxDxJ7ztO285tAMaYZVR6mM1GgI6CCn8FROtL1w==}
+    resolution: {integrity: sha1-DRhUMQRKNWv4Dpt3WxG5Ne8nRtM=}
     dev: false
 
   /rollup@3.23.0:
@@ -1116,7 +1119,7 @@ packages:
     dev: true
 
   /simple-swizzle@0.2.2:
-    resolution: {integrity: sha512-JA//kQgZtbuY83m+xT+tXJkmJncGMTFT+C+g2h2R9uxkYIrE2yy9sgmcLhCnw57/WSD+Eh3J97FPEDFnbXnDUg==}
+    resolution: {integrity: sha1-pNprY1/8zMoz9w0Xy5JZLeleVXo=}
     dependencies:
       is-arrayish: 0.3.2
     dev: false

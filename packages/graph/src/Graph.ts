@@ -1,9 +1,8 @@
-import G6, { EdgeConfig, Graph as G6Graph, GraphData, IG6GraphEvent, INode, Item, ShapeStyle, StateStyles, UpdateType } from "@antv/g6";
-import { GraphEventMap, GraphOptions, INodeConfig, AnchorTag, AddEdgeOptions } from "./interfaces";
+import G6, { EdgeConfig, Graph as G6Graph, GraphData, INode, ShapeStyle, StateStyles } from "@antv/g6";
+import { GraphOptions, INodeConfig, AnchorTag, AddEdgeOptions } from "./interfaces";
 import _ from 'lodash';
 import registerFactory from "./register-factory";
 import { AnchorBaseConfig_DTS, ConstOrVariable_DTS } from './interfaces/service';
-import getImgByType from "./utils/getImgByType";
 import { DEFAULT_STYLES, LOGIC_STATEMENT_EDGE, LOGIC_VARIABLE_EDGE } from "./consts";
 import { getEgdeStyle } from "./utils/getEgdeStyle";
 import { SchemaType } from "./interfaces/schema";

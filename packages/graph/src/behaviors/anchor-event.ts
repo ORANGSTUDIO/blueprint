@@ -1,4 +1,4 @@
-import { IG6GraphEvent, IGroup, INode, IShape } from '@antv/g6';
+import { IG6GraphEvent, IGroup, IShape } from '@antv/g6';
 import _ from 'lodash';
 // import { GraphUtil } from '../graph-util';
 import getColorByType from '../utils/getColorByType';
@@ -6,9 +6,9 @@ import getColorByType from '../utils/getColorByType';
 let dragLog: number[] = [];
 let anchorNodeId: string | number | null = null;
 
-export default (anchor: IShape, group: IGroup, p: [number, number]) => {
+export default (anchor: IShape, group: IGroup, p: number[]) => {
 
-  anchor.on('mouseenter', (e: IG6GraphEvent) => {
+  anchor.on('mouseenter', (_e: IG6GraphEvent) => {
     anchor.attr({
       cursor: 'crosshair',
     });
@@ -101,7 +101,7 @@ export default (anchor: IShape, group: IGroup, p: [number, number]) => {
     });
   });
 
-  anchor.on('dragend', (e: IG6GraphEvent) => {
+  anchor.on('dragend', (_e: IG6GraphEvent) => {
     const item = group.$getItem('dashed-line');
     item.remove();
     anchorNodeId = null;
