@@ -1,10 +1,10 @@
-import Action from "../Action";
+import Action from '../Action';
 
+import { IGroup, Point } from '@antv/g-base';
 import { BehaviorOption, IEdge, IG6GraphEvent, IGraph, INode } from '@antv/g6';
 import _ from 'lodash';
 import { AnchorTag, INodeConfig } from '../interfaces/';
-import { BehaviorOptionThis } from "../interfaces/behavior";
-import { IGroup, Point } from "@antv/g-base";
+import { BehaviorOptionThis } from '../interfaces/behavior';
 
 /**
  * 计算鼠标位置与矩形最小距离
@@ -25,37 +25,46 @@ function calculateMinDistance(mouseX: number, mouseY: number, edge: IEdge) {
   };
 }
 
-function findMinDistanceEdge(mouseX: number, mouseY: number, allEdges: IEdge[]) {
+function findMinDistanceEdge(
+  mouseX: number,
+  mouseY: number,
+  allEdges: IEdge[]
+) {
   const all: Array<{
     target: IEdge;
     distance: number;
-  }> = allEdges.map((edge: IEdge) => calculateMinDistance(mouseX, mouseY, edge));
+  }> = allEdges.map((edge: IEdge) =>
+    calculateMinDistance(mouseX, mouseY, edge)
+  );
 
-  return _.minBy(all, (o) => o.distance);
+  return _.minBy(all, o => o.distance);
 }
 
 export default class DragNodeAction extends Action {
-  public name: string = "drag-shadow-node";
+  public name: string = 'drag-shadow-node';
 
   public behaviorOption(): BehaviorOption {
-    const self = this
-    const option: BehaviorOptionThis<'getDefaultCfg' | 'getEvents' | 'shouldBegin', {
-      _clearSelected: () => void;
-      _nodeOnDragStart: (e: IG6GraphEvent, group: IGroup) => void;
-      _nodeOnDrag: (e: IG6GraphEvent, group: IGroup) => void;
-      _nodeOnDragEnd: (e: IG6GraphEvent, group: IGroup) => void;
-      _addShadowNode: (e: IG6GraphEvent, group: IGroup) => void;
-      getNearestEdge: (e: IG6GraphEvent) => void;
-      _dragNodeModeCheck: () => boolean;
-      distance: number[];
-      dragStartNode: {
-        id?: number | string | undefined;
-        anchorIndex: number;
-        anchorData: any;
-        group?: IGroup;
-      },
-      origin: Point
-    }> = {
+    const self = this;
+    const option: BehaviorOptionThis<
+      'getDefaultCfg' | 'getEvents' | 'shouldBegin',
+      {
+        _clearSelected: () => void;
+        _nodeOnDragStart: (e: IG6GraphEvent, group: IGroup) => void;
+        _nodeOnDrag: (e: IG6GraphEvent, group: IGroup) => void;
+        _nodeOnDragEnd: (e: IG6GraphEvent, group: IGroup) => void;
+        _addShadowNode: (e: IG6GraphEvent, group: IGroup) => void;
+        getNearestEdge: (e: IG6GraphEvent) => void;
+        _dragNodeModeCheck: () => boolean;
+        distance: number[];
+        dragStartNode: {
+          id?: number | string | undefined;
+          anchorIndex: number;
+          anchorData: any;
+          group?: IGroup;
+        };
+        origin: Point;
+      }
+    > = {
       getDefaultCfg() {
         return {
           isGragging: false,
@@ -96,24 +105,32 @@ export default class DragNodeAction extends Action {
             anchorIndex: e.target.cfg.index,
             anchorData: e.target.cfg.anchorData, // 把当前点击的锚点也挂载上去
           };
-          const nodes = this.graph.findAll('node', (node) => !!node);
+          const nodes = this.graph.findAll('node', node => !!node);
 
-          nodes.forEach((node) => {
+          nodes.forEach(node => {
             node.setState('anchorActived', true);
           });
 
           // > feat: 语句锚点,已经被连接的锚点不能再被连接
-          if ([AnchorTag.STATEMENT_OUTPUT, AnchorTag.STATEMENT_INPUT].includes(e.target.cfg?.anchorData?.tag)) {
+          if (
+            [AnchorTag.STATEMENT_OUTPUT, AnchorTag.STATEMENT_INPUT].includes(
+              e.target.cfg?.anchorData?.tag
+            )
+          ) {
             const index = e.target.cfg.anchorData.index;
             const edges = this.graph.getEdges();
             const exist = edges.find(
-              (edge) => edge._cfg && edge._cfg.model && edge._cfg.model.source === e.target.cfg.nodeId && edge._cfg.model.sourceAnchor === index,
+              edge =>
+                edge._cfg &&
+                edge._cfg.model &&
+                edge._cfg.model.source === e.target.cfg.nodeId &&
+                edge._cfg.model.sourceAnchor === index
             );
             if (exist) {
               if (!this.shouldBegin(e)) return;
               this.isGragging = false;
-              const nodes = this.graph.findAll('node', (node) => !!node);
-              nodes.forEach((node) => {
+              const nodes = this.graph.findAll('node', node => !!node);
+              nodes.forEach(node => {
                 node.clearStates('anchorActived');
               });
               return;
@@ -125,9 +142,9 @@ export default class DragNodeAction extends Action {
       onMouseup(e: IG6GraphEvent) {
         if (!this.shouldBegin(e)) return;
         if (this.dragTarget === 'anchor') {
-          const nodes = this.graph.findAll('node', (node) => !!node);
+          const nodes = this.graph.findAll('node', node => !!node);
 
-          nodes.forEach((node) => {
+          nodes.forEach(node => {
             node.clearStates('anchorActived');
           });
         }
@@ -178,12 +195,15 @@ export default class DragNodeAction extends Action {
 
         this.isGragging = false;
         if (this.dragTarget === 'anchor') {
-          const nodes = this.graph.findAll('node', (node) => !!node);
+          const nodes = this.graph.findAll('node', node => !!node);
 
-          nodes.forEach((node) => {
+          nodes.forEach(node => {
             node.clearStates('anchorActived');
           });
-        } else if (this.dragTarget === 'node' && group.getFirst().cfg.xShapeNode) {
+        } else if (
+          this.dragTarget === 'node' &&
+          group.getFirst().cfg.xShapeNode
+        ) {
           this._nodeOnDragEnd(e, group);
         }
       },
@@ -192,9 +212,13 @@ export default class DragNodeAction extends Action {
         if (!this.shouldBegin(e)) return;
         if (!e.item) return;
         // e.item 当前拖拽节点 | e.target 当前释放节点
-        if (this.dragStartNode.id && e.target.cfg.isAnchor && this.dragStartNode.id !== e.target.cfg.nodeId) {
+        if (
+          this.dragStartNode.id &&
+          e.target.cfg.isAnchor &&
+          this.dragStartNode.id !== e.target.cfg.nodeId
+        ) {
           if (!this.dragStartNode.group) {
-            return
+            return;
           }
 
           const sourceNode = this.dragStartNode.group.get('item');
@@ -210,7 +234,8 @@ export default class DragNodeAction extends Action {
                 edge.get('target').get('id') === e.target.cfg.nodeId &&
                 edge.get('sourceAnchorIndex') === this.sourceAnchorIndex &&
                 edge.get('targetAnchorIndex') === targetAnchorIndex) ||
-              (singleEdge && edge.get('target').get('id') === e.target.cfg.nodeId)
+              (singleEdge &&
+                edge.get('target').get('id') === e.target.cfg.nodeId)
             ) {
               return true;
             }
@@ -231,8 +256,9 @@ export default class DragNodeAction extends Action {
       /**
        * @description 判断当前画布模式是否启用了内置的 drag-node, 因为有冲突
        */
-      _dragNodeModeCheck():  boolean {
-        const currentMode = this.graph.get('modes')[this.graph.getCurrentMode()];
+      _dragNodeModeCheck(): boolean {
+        const currentMode =
+          this.graph.get('modes')[this.graph.getCurrentMode()];
 
         if (currentMode.includes('drag-node')) {
           return true;
@@ -253,8 +279,11 @@ export default class DragNodeAction extends Action {
        */
       _addShadowNode(e: IG6GraphEvent, group: IGroup) {
         const item = group.get('item');
-        const model = item.get('model');
         const { width, height, centerX, centerY } = item.getBBox();
+
+        this.distance = [e.x - centerX + width / 2, e.y - centerY + height / 2];
+        const x = e.x - centerX - this.distance[0];
+        const y = e.y - centerY - this.distance[1];
 
         let attrs = {
           fillOpacity: 0.1,
@@ -264,11 +293,9 @@ export default class DragNodeAction extends Action {
           lineDash: [4, 4],
           width,
           height,
-          x: model.x,
-          y: model.y,
+          x,
+          y,
         } as any;
-
-        this.distance = [e.x - centerX + width / 2, e.y - centerY + height / 2];
 
         const shadowNode = group.addShape('rect', {
           className: 'shadow-node',
@@ -286,10 +313,12 @@ export default class DragNodeAction extends Action {
         const item = group.get('item');
         const pathAttrs = group.getFirst();
         const { centerX, centerY } = item.getBBox();
-        const shadowNode = pathAttrs.cfg.xShapeNode ? group.$getItem('shadow-node') : null;
+        const shadowNode = pathAttrs.cfg.xShapeNode
+          ? group.$getItem('shadow-node')
+          : null;
 
         if (!shadowNode) {
-          return
+          return;
         }
 
         shadowNode.attr({
@@ -309,11 +338,13 @@ export default class DragNodeAction extends Action {
         if (!e.item) return;
         const model = e.item.getModel();
 
-        const shadowNode = group.getFirst().cfg.xShapeNode ? group.$getItem('shadow-node') : null;
+        const shadowNode = group.getFirst().cfg.xShapeNode
+          ? group.$getItem('shadow-node')
+          : null;
 
         if (shadowNode) {
           if (!model.x || !model.y) {
-            return
+            return;
           }
 
           const x = e.x - this.origin.x + model.x;
@@ -331,41 +362,42 @@ export default class DragNodeAction extends Action {
           }
         }
         if (this.insertNodeInfo) {
-          const { edge, node } = this.insertNodeInfo as { edge: IEdge; node: INode };
+          const { edge, node } = this.insertNodeInfo as {
+            edge: IEdge;
+            node: INode;
+          };
           const sourceNode: INode = edge.getSource();
           const targetNode: INode = edge.getTarget();
 
           const sourceNodeData = (sourceNode.getModel() as INodeConfig).data;
 
           if (!sourceNodeData) {
-            return
+            return;
           }
 
           // 找出sourceNode的语句输出锚点的索引
           const sourceStatementOutputAnchor = sourceNodeData.anchors.find(
-            (i) => i.tag === AnchorTag.STATEMENT_OUTPUT,
+            i => i.tag === AnchorTag.STATEMENT_OUTPUT
           );
 
           if (!sourceStatementOutputAnchor) {
-            return
+            return;
           }
 
           const sourceAnchorIndex = sourceStatementOutputAnchor.index;
 
-
           const targetNodeData = (targetNode.getModel() as INodeConfig).data;
 
           if (!targetNodeData) {
-            return
+            return;
           }
 
-
           const targetStatementInputAnchor = targetNodeData.anchors.find(
-            (i) => i.tag === AnchorTag.STATEMENT_INPUT,
+            i => i.tag === AnchorTag.STATEMENT_INPUT
           );
 
           if (!targetStatementInputAnchor) {
-            return
+            return;
           }
 
           const targetAnchorIndex = targetStatementInputAnchor.index;
@@ -390,9 +422,12 @@ export default class DragNodeAction extends Action {
       },
       // 清空已选的边
       _clearSelected() {
-        const selectedEdges = this.graph.findAllByState('edge', 'edgeState:selected');
+        const selectedEdges = this.graph.findAllByState(
+          'edge',
+          'edgeState:selected'
+        );
 
-        selectedEdges.forEach((edge) => {
+        selectedEdges.forEach(edge => {
           edge.clearStates(['edgeState:selected', 'edgeState:hover']);
         });
       },
@@ -406,10 +441,12 @@ export default class DragNodeAction extends Action {
         const model = node.getModel() as INodeConfig;
         const point = { x: e.x, y: e.y };
         if (!model.data) {
-          return
+          return;
         }
         // 首先这个块要同时有输入和输出,并且两端没有被连接才可以
-        const anchors = model.data.anchors.filter((i) => i.tag.startsWith('statement') && !i.connected);
+        const anchors = model.data.anchors.filter(
+          i => i.tag.startsWith('statement') && !i.connected
+        );
         // 有些块多个输出
         if (anchors.length < 2) {
           return;
@@ -422,8 +459,10 @@ export default class DragNodeAction extends Action {
             // 必须是逻辑语句边,变量边不处理
             return edge.getModel().type === 'logic-statement-edge';
           })
-          .filter((edge) => {
-            const exist = relatedEdges.find((i) => i.get('id') === edge.get('id'));
+          .filter(edge => {
+            const exist = relatedEdges.find(
+              i => i.get('id') === edge.get('id')
+            );
             return !exist;
           });
 
@@ -433,9 +472,12 @@ export default class DragNodeAction extends Action {
           if (v.distance <= 10) {
             if (v.target) {
               if (!v.target.hasState('edgeState:preselection')) {
-                const prev = (this.graph as IGraph).findAllByState('edge', 'edgeState:preselection');
+                const prev = (this.graph as IGraph).findAllByState(
+                  'edge',
+                  'edgeState:preselection'
+                );
                 if (prev) {
-                  prev.forEach((i) => i.clearStates('edgeState:preselection'));
+                  prev.forEach(i => i.clearStates('edgeState:preselection'));
                   this.insertNodeInfo = null;
                 }
                 v.target.setState('edgeState:preselection', true);
@@ -456,6 +498,6 @@ export default class DragNodeAction extends Action {
         }
       },
     };
-    return option
+    return option;
   }
 }
