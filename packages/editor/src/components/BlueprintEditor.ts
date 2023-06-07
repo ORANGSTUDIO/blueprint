@@ -281,7 +281,7 @@ export class BlueprintEditor extends LitElement {
     let container: HTMLElement | undefined = this.container
     if (!container) {
       console.log('@query container not found, try use shadowRoot')
-      const container = this.shadowRoot?.querySelector('blueprint-graph-container')
+      const container = this.shadowRoot?.querySelector('.blueprint-graph-container')
 
       if (!container) {
         throw new Error('no container found')
