@@ -278,10 +278,17 @@ export class BlueprintEditor extends LitElement {
   }
 
   protected firstUpdated() {
-    if (!this.container) {
-      return
+    let container: HTMLElement | undefined | null = this.container
+    if (!container) {
+      console.log('@query container not found, try use shadowRoot')
+      container = this.shadowRoot?.querySelector('.blueprint-graph-container')
+
+      if (!container) {
+        throw new Error('no container found')
+      }
+
     }
-    const graph = new Graph({ container: this.container })
+    const graph = new Graph({ container: container as HTMLElement })
     graph.updateGraphData(this.graphData)
     this.graph = graph
   }
