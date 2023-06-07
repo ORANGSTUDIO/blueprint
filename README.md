@@ -1,5 +1,5 @@
 <p align="center">
-<img src="/assets/images/favicon.svg" height="150">
+<img src="assets/images/favicon.svg" height="150">
 </p>
 <h1 align="center">
 Blueprint
