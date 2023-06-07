@@ -1,4 +1,4 @@
-import G6, { BehaviorOption } from "@antv/g6";
+import { BehaviorOption } from "@antv/g6";
 import Graph from "./Graph";
 
 export default abstract class Action {

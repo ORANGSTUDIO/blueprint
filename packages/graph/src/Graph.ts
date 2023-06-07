@@ -249,75 +249,75 @@ export default class Graph {
     });
   }
 
-  public nodeUpdate(cfg: INodeConfig<any>, node: INode, updateType?: UpdateType) {
-    if (updateType === 'bbox') {
-      node.draw();
-      // this.graph.changeData();
-      this.updateAnchorIndex(cfg, node);
-      return;
-    }
+  // public nodeUpdate(cfg: INodeConfig<any>, node: INode, updateType?: UpdateType) {
+  //   if (updateType === 'bbox') {
+  //     node.draw();
+  //     // this.graph.changeData();
+  //     this.updateAnchorIndex(cfg, node);
+  //     return;
+  //   }
 
-    const model = node.get('model');
-    const { attrs } = node.get('keyShape');
-    const group = node.get('group');
-    const item = group.get('children')[0];
-    item.attr({ ...attrs, ...model.style });
-    // 锚点被链接后需要变成实心
-    const children = group.get('children');
-    const anchorImgs: Item[] = children.filter((item: Item) =>
-      [AnchorTag.STATEMENT_OUTPUT, AnchorTag.STATEMENT_INPUT, AnchorTag.VAR_INPUT, AnchorTag.VAR_OUTPUT].includes(
-        item.get('anchorTag'),
-      ),
-    );
+  //   const model = node.get('model');
+  //   const { attrs } = node.get('keyShape');
+  //   const group = node.get('group');
+  //   const item = group.get('children')[0];
+  //   item.attr({ ...attrs, ...model.style });
+  //   // 锚点被链接后需要变成实心
+  //   const children = group.get('children');
+  //   const anchorImgs: Item[] = children.filter((item: Item) =>
+  //     [AnchorTag.STATEMENT_OUTPUT, AnchorTag.STATEMENT_INPUT, AnchorTag.VAR_INPUT, AnchorTag.VAR_OUTPUT].includes(
+  //       item.get('anchorTag'),
+  //     ),
+  //   );
 
-    anchorImgs.forEach((imgShape) => {
-      const anchorIndex = imgShape.get('anchorIndex');
-      if (cfg.data.anchors[anchorIndex]) {
-        const {
-          connected = false,
-          tag,
-          data: { type, schema },
-        } = cfg.data.anchors[anchorIndex];
+  //   anchorImgs.forEach((imgShape) => {
+  //     const anchorIndex = imgShape.get('anchorIndex');
+  //     if (cfg.data.anchors[anchorIndex]) {
+  //       const {
+  //         connected = false,
+  //         tag,
+  //         data: { type, schema },
+  //       } = cfg.data.anchors[anchorIndex];
 
-        if ([AnchorTag.STATEMENT_OUTPUT, AnchorTag.STATEMENT_INPUT].includes(tag)) {
-          imgShape.attr({
-            // img: require(`./img/statement_anchor${connected ? '' : '_light'}.svg`),
-            img: 'Graph 147',
-          });
-        } else {
-          imgShape.attr({
-            img: getImgByType(schema.type || type, AnchorTag.VAR_INPUT === tag ? 'in' : 'out', connected).src,
-          });
-        }
-      } else {
-        console.warn('找不到该锚点!');
-      }
-    });
+  //       if ([AnchorTag.STATEMENT_OUTPUT, AnchorTag.STATEMENT_INPUT].includes(tag)) {
+  //         imgShape.attr({
+  //           // img: require(`./img/statement_anchor${connected ? '' : '_light'}.svg`),
+  //           img: 'Graph 147',
+  //         });
+  //       } else {
+  //         imgShape.attr({
+  //           img: getImgByType(schema.type || type, AnchorTag.VAR_INPUT === tag ? 'in' : 'out', connected).src,
+  //         });
+  //       }
+  //     } else {
+  //       console.warn('找不到该锚点!');
+  //     }
+  //   });
 
-    const badges: Item[] = children.filter((item: Item) => item.get('name') === 'badge');
-    badges.forEach((badge) => {
-      const anchorIndex = badge.get('anchorIndex');
-      if (cfg.data.anchors[anchorIndex]) {
-        const {
-          data: { constOrVariable = ConstOrVariable_DTS.USE_VARIABLE, value },
-        } = cfg.data.anchors[anchorIndex];
-        badge.attr('opacity', constOrVariable !== ConstOrVariable_DTS.USE_VARIABLE || value ? 1 : 0);
-      }
-    });
-    this.updateAnchorIndex(cfg, node);
-  }
+  //   const badges: Item[] = children.filter((item: Item) => item.get('name') === 'badge');
+  //   badges.forEach((badge) => {
+  //     const anchorIndex = badge.get('anchorIndex');
+  //     if (cfg.data.anchors[anchorIndex]) {
+  //       const {
+  //         data: { constOrVariable = ConstOrVariable_DTS.USE_VARIABLE, value },
+  //       } = cfg.data.anchors[anchorIndex];
+  //       badge.attr('opacity', constOrVariable !== ConstOrVariable_DTS.USE_VARIABLE || value ? 1 : 0);
+  //     }
+  //   });
+  //   this.updateAnchorIndex(cfg, node);
+  // }
 
-  public registerEvents(event: GraphEventMap[]);
-  public registerEvents(event: string, callback: (e: IG6GraphEvent) => void);
-  public registerEvents(event: string | GraphEventMap[], callback?: (e: IG6GraphEvent) => void) {
-    if (Array.isArray(event)) {
-      _.forEach(event, (ev: GraphEventMap) => {
-        this.graph.on(ev.eventName, ev.callback);
-      });
-    } else {
-      if (callback) {
-        this.graph.on(event, callback);
-      }
-    }
-  }
+  // public registerEvents(event: GraphEventMap[]);
+  // public registerEvents(event: string, callback: (e: IG6GraphEvent) => void);
+  // public registerEvents(event: string | GraphEventMap[], callback?: (e: IG6GraphEvent) => void) {
+  //   if (Array.isArray(event)) {
+  //     _.forEach(event, (ev: GraphEventMap) => {
+  //       this.graph.on(ev.eventName, ev.callback);
+  //     });
+  //   } else {
+  //     if (callback) {
+  //       this.graph.on(event, callback);
+  //     }
+  //   }
+  // }
 }

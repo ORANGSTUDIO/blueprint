@@ -1,4 +1,4 @@
-import { IGroup, ShapeOptions, ShapeStyle, Item } from '@antv/g6';
+import { IGroup, ShapeOptions, ShapeStyle, Item, ModelConfig, NodeConfig } from '@antv/g6';
 import { IG6, IIGroup, IModelConfig, INodeConfig, IShapeOptions } from '../../interfaces';
 import { BlockNames_DTS } from '../../interfaces/service';
 import anchorEvent from '../../behaviors/anchor-event';
@@ -22,7 +22,7 @@ export default (G6: IG6) => {
   const nodeDefinition: IShapeOptions = {
     itemType,
     // 自定义方法
-    calcNodeHeight(cfg?: INodeConfig) {
+    calcNodeHeight(cfg?: NodeConfig) {
       if (!cfg) {
         return
       }
@@ -171,7 +171,7 @@ export default (G6: IG6) => {
       return keyShape;
     },
 
-    update(cfg: IModelConfig, node: Item, updateType?: any) {
+    update(cfg: ModelConfig, node: Item, updateType?: any) {
     },
     // update: null,
 
