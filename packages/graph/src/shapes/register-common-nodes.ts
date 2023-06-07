@@ -1,5 +1,5 @@
-import G6, { IGroup, ModelConfig, NodeConfig } from "@antv/g6";
-import { AnchorTag, IIGroup, INodeConfig, IShapeOptions, AnchorStatementInput, AnchorStatementOutput, AnchorVarInput, AnchorVarOutput } from "../interfaces";
+import G6, { IGroup, ModelConfig } from "@antv/g6";
+import { AnchorTag, IIGroup, IShapeOptions, AnchorStatementInput, AnchorStatementOutput, AnchorVarInput, AnchorVarOutput } from "../interfaces";
 import { BlockNames_DTS } from "../interfaces/service";
 import getImgByType from "../utils/getImgByType";
 
@@ -13,10 +13,10 @@ import { defaultNodes } from "./nodes";
 
 export function registerCommonNode(logicNode: LogicNode): void {
   const { name, label, cover, intro } = logicNode;
-  const nodeDefinition: IShapeOptions = {
+  const nodeDefinition: Partial<IShapeOptions> = {
     itemType: name,
 
-    calcNodeHeight(cfg?: NodeConfig, group?: IGroup) {
+    calcNodeHeight(cfg?: ModelConfig, group?: IGroup) {
       if (!cfg) {
         throw new Error('no cfg')
       }
@@ -109,13 +109,17 @@ export function registerCommonNode(logicNode: LogicNode): void {
      * @param cfg
      * @param group
      */
-    assembleShape(cfg?: INodeConfig, group?: IIGroup) {
+    assembleShape(cfg?: ModelConfig, group?: IIGroup) {
       if (!cfg) {
         throw new Error('no cfg')
       }
 
       if (!group) {
         throw new Error('no group')
+      }
+
+      if (!cfg.nodeWidth || !cfg.nodeHeight) {
+        throw new Error('invalid cfg')
       }
 
       const offsetX = -cfg.nodeWidth / 2;
