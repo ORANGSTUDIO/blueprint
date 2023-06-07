@@ -24,12 +24,252 @@ export class BlueprintEditor extends LitElement {
   @property({ type: Number })
   count = 0
 
+  @property({ type: Object })
+  graphData = {
+    "nodes": [
+        {
+            "id": "logic-start-node",
+            "x": 175,
+            "y": 284,
+            "type": "logic-start-node",
+        },
+        {
+            "type": "logic-end-node",
+            "id": "logic-end-node",
+            "x": 740,
+            "y": 284,
+        },
+        {
+            "id": "1684981368175660",
+            "x": 270.796875,
+            "y": 459,
+            "type": "logic-variable-node",
+            "data": {
+              "uuid": "30ebcf14cc204376bc19e34913dbc87e",
+            }
+        }
+    ],
+    "edges": [
+        {
+            "type": "logic-statement-edge",
+            "id": "16838001913853279",
+            "source": "logic-start-node",
+            "target": "logic-end-node",
+            "sourceAnchor": 0,
+            "targetAnchor": 0,
+            "style": {
+                "edgeState:default": {
+                    "radius": 6,
+                    "offset": -15,
+                    "lineWidth": 3,
+                    "stroke": "#1890FF",
+                    "lineAppendWidth": 10,
+                    "endArrow": null
+                },
+                "edgeState:selected": {
+                    "radius": 6,
+                    "offset": -15,
+                    "lineWidth": 3,
+                    "stroke": "#1890FF",
+                    "lineAppendWidth": 10,
+                    "endArrow": null
+                },
+                "edgeState:hover": {
+                    "radius": 6,
+                    "offset": -15,
+                    "lineWidth": 3,
+                    "stroke": "#1890FF",
+                    "lineAppendWidth": 10,
+                    "endArrow": null
+                },
+                "radius": 6,
+                "offset": -15,
+                "lineWidth": 3,
+                "stroke": "#1890FF",
+                "lineAppendWidth": 10,
+            },
+            "stateStyles": {
+                "edgeState:default": {
+                    "radius": 6,
+                    "offset": -15,
+                    "lineWidth": 3,
+                    "stroke": "#1890FF",
+                    "lineAppendWidth": 10,
+                },
+                "edgeState:selected": {
+                    "radius": 6,
+                    "offset": -15,
+                    "lineWidth": 3,
+                    "stroke": "#1890FF",
+                    "lineAppendWidth": 10,
+                },
+                "edgeState:hover": {
+                    "radius": 6,
+                    "offset": -15,
+                    "lineWidth": 3,
+                    "stroke": "#1890FF",
+                    "lineAppendWidth": 10,
+                }
+            },
+            "startPoint": {
+                "x": 280.5,
+                "y": 291.05223880597015,
+                "anchorIndex": 0
+            },
+            "endPoint": {
+                "x": 634.5,
+                "y": 291.05223880597015,
+                "anchorIndex": 0
+            }
+        },
+        {
+            "type": "logic-variable-edge",
+            "id": "16849813722697492",
+            "source": "1684981368175660",
+            "target": "logic-end-node",
+            "sourceAnchor": 0,
+            "targetAnchor": 1,
+            "style": {
+                "edgeState:default": {
+                    "radius": 6,
+                    "offset": -15,
+                    "lineWidth": 2,
+                    "stroke": "#52C41A",
+                    "lineAppendWidth": 10,
+                    "endArrow": {
+                        "lineDash": [
+                            0
+                        ],
+                        "path": "M 0,0 L 8,4 L 7,0 L 8,-4 Z",
+                        "d": 0,
+                        "fill": "#52C41A",
+                        "stroke": "#52C41A"
+                    }
+                },
+                "edgeState:selected": {
+                    "radius": 6,
+                    "offset": -15,
+                    "lineWidth": 2,
+                    "stroke": "#52C41A",
+                    "lineAppendWidth": 10,
+                    "endArrow": {
+                        "lineDash": [
+                            0
+                        ],
+                        "path": "M 0,0 L 8,4 L 7,0 L 8,-4 Z",
+                        "d": 0,
+                        "fill": "#52C41A",
+                        "stroke": "#52C41A"
+                    }
+                },
+                "edgeState:hover": {
+                    "radius": 6,
+                    "offset": -15,
+                    "lineWidth": 2,
+                    "stroke": "#52C41A",
+                    "lineAppendWidth": 10,
+                    "endArrow": {
+                        "lineDash": [
+                            0
+                        ],
+                        "path": "M 0,0 L 8,4 L 7,0 L 8,-4 Z",
+                        "d": 0,
+                        "fill": "#52C41A",
+                        "stroke": "#52C41A"
+                    }
+                },
+                "radius": 6,
+                "offset": -15,
+                "lineWidth": 2,
+                "stroke": "#52C41A",
+                "lineAppendWidth": 10,
+                "endArrow": {
+                    "lineDash": [
+                        0
+                    ],
+                    "path": "M 0,0 L 8,4 L 7,0 L 8,-4 Z",
+                    "d": 0,
+                    "fill": "#52C41A",
+                    "stroke": "#52C41A"
+                }
+            },
+            "stateStyles": {
+                "edgeState:default": {
+                    "radius": 6,
+                    "offset": -15,
+                    "lineWidth": 2,
+                    "stroke": "#52C41A",
+                    "lineAppendWidth": 10,
+                    "endArrow": {
+                        "lineDash": [
+                            0
+                        ],
+                        "path": "M 0,0 L 8,4 L 7,0 L 8,-4 Z",
+                        "d": 0,
+                        "fill": "#52C41A",
+                        "stroke": "#52C41A"
+                    }
+                },
+                "edgeState:selected": {
+                    "radius": 6,
+                    "offset": -15,
+                    "lineWidth": 2,
+                    "stroke": "#52C41A",
+                    "lineAppendWidth": 10,
+                    "endArrow": {
+                        "lineDash": [
+                            0
+                        ],
+                        "path": "M 0,0 L 8,4 L 7,0 L 8,-4 Z",
+                        "d": 0,
+                        "fill": "#52C41A",
+                        "stroke": "#52C41A"
+                    }
+                },
+                "edgeState:hover": {
+                    "radius": 6,
+                    "offset": -15,
+                    "lineWidth": 2,
+                    "stroke": "#52C41A",
+                    "lineAppendWidth": 10,
+                    "endArrow": {
+                        "lineDash": [
+                            0
+                        ],
+                        "path": "M 0,0 L 8,4 L 7,0 L 8,-4 Z",
+                        "d": 0,
+                        "fill": "#52C41A",
+                        "stroke": "#52C41A"
+                    }
+                }
+            },
+            "data": {
+                "varType": "string",
+                "coercive": true
+            },
+            "startPoint": {
+                "x": 346.296875,
+                "y": 459,
+                "anchorIndex": 0
+            },
+            "endPoint": {
+                "x": 634.5,
+                "y": 321.27611940298505,
+                "anchorIndex": 1
+            }
+        }
+    ],
+    "combos": []
+  }
+
+  graph!: Graph
+
   render() {
     return html`
       <slot></slot>
       <div class="card">
         <button @click=${this._onClick} part="button">
-          count is ${this.count}
+          update graph
         </button>
         <div class="blueprint-graph-container"></div>
       </div>
@@ -42,250 +282,13 @@ export class BlueprintEditor extends LitElement {
       return
     }
     const graph = new Graph({ container: this.container })
-    graph.updateGraphData({
-      "nodes": [
-          {
-              "id": "logic-start-node",
-              "x": 175,
-              "y": 284,
-              "type": "logic-start-node",
-          },
-          {
-              "type": "logic-end-node",
-              "id": "logic-end-node",
-              "x": 740,
-              "y": 284,
-          },
-          {
-              "id": "1684981368175660",
-              "x": 270.796875,
-              "y": 459,
-              "type": "logic-variable-node",
-              "data": {
-                "uuid": "30ebcf14cc204376bc19e34913dbc87e",
-              }
-          }
-      ],
-      "edges": [
-          {
-              "type": "logic-statement-edge",
-              "id": "16838001913853279",
-              "source": "logic-start-node",
-              "target": "logic-end-node",
-              "sourceAnchor": 0,
-              "targetAnchor": 0,
-              "style": {
-                  "edgeState:default": {
-                      "radius": 6,
-                      "offset": -15,
-                      "lineWidth": 3,
-                      "stroke": "#1890FF",
-                      "lineAppendWidth": 10,
-                      "endArrow": null
-                  },
-                  "edgeState:selected": {
-                      "radius": 6,
-                      "offset": -15,
-                      "lineWidth": 3,
-                      "stroke": "#1890FF",
-                      "lineAppendWidth": 10,
-                      "endArrow": null
-                  },
-                  "edgeState:hover": {
-                      "radius": 6,
-                      "offset": -15,
-                      "lineWidth": 3,
-                      "stroke": "#1890FF",
-                      "lineAppendWidth": 10,
-                      "endArrow": null
-                  },
-                  "radius": 6,
-                  "offset": -15,
-                  "lineWidth": 3,
-                  "stroke": "#1890FF",
-                  "lineAppendWidth": 10,
-                  "endArrow": null
-              },
-              "stateStyles": {
-                  "edgeState:default": {
-                      "radius": 6,
-                      "offset": -15,
-                      "lineWidth": 3,
-                      "stroke": "#1890FF",
-                      "lineAppendWidth": 10,
-                      "endArrow": null
-                  },
-                  "edgeState:selected": {
-                      "radius": 6,
-                      "offset": -15,
-                      "lineWidth": 3,
-                      "stroke": "#1890FF",
-                      "lineAppendWidth": 10,
-                      "endArrow": null
-                  },
-                  "edgeState:hover": {
-                      "radius": 6,
-                      "offset": -15,
-                      "lineWidth": 3,
-                      "stroke": "#1890FF",
-                      "lineAppendWidth": 10,
-                      "endArrow": null
-                  }
-              },
-              "startPoint": {
-                  "x": 280.5,
-                  "y": 291.05223880597015,
-                  "anchorIndex": 0
-              },
-              "endPoint": {
-                  "x": 634.5,
-                  "y": 291.05223880597015,
-                  "anchorIndex": 0
-              }
-          },
-          {
-              "type": "logic-variable-edge",
-              "id": "16849813722697492",
-              "source": "1684981368175660",
-              "target": "logic-end-node",
-              "sourceAnchor": 0,
-              "targetAnchor": 1,
-              "style": {
-                  "edgeState:default": {
-                      "radius": 6,
-                      "offset": -15,
-                      "lineWidth": 2,
-                      "stroke": "#52C41A",
-                      "lineAppendWidth": 10,
-                      "endArrow": {
-                          "lineDash": [
-                              0
-                          ],
-                          "path": "M 0,0 L 8,4 L 7,0 L 8,-4 Z",
-                          "d": 0,
-                          "fill": "#52C41A",
-                          "stroke": "#52C41A"
-                      }
-                  },
-                  "edgeState:selected": {
-                      "radius": 6,
-                      "offset": -15,
-                      "lineWidth": 2,
-                      "stroke": "#52C41A",
-                      "lineAppendWidth": 10,
-                      "endArrow": {
-                          "lineDash": [
-                              0
-                          ],
-                          "path": "M 0,0 L 8,4 L 7,0 L 8,-4 Z",
-                          "d": 0,
-                          "fill": "#52C41A",
-                          "stroke": "#52C41A"
-                      }
-                  },
-                  "edgeState:hover": {
-                      "radius": 6,
-                      "offset": -15,
-                      "lineWidth": 2,
-                      "stroke": "#52C41A",
-                      "lineAppendWidth": 10,
-                      "endArrow": {
-                          "lineDash": [
-                              0
-                          ],
-                          "path": "M 0,0 L 8,4 L 7,0 L 8,-4 Z",
-                          "d": 0,
-                          "fill": "#52C41A",
-                          "stroke": "#52C41A"
-                      }
-                  },
-                  "radius": 6,
-                  "offset": -15,
-                  "lineWidth": 2,
-                  "stroke": "#52C41A",
-                  "lineAppendWidth": 10,
-                  "endArrow": {
-                      "lineDash": [
-                          0
-                      ],
-                      "path": "M 0,0 L 8,4 L 7,0 L 8,-4 Z",
-                      "d": 0,
-                      "fill": "#52C41A",
-                      "stroke": "#52C41A"
-                  }
-              },
-              "stateStyles": {
-                  "edgeState:default": {
-                      "radius": 6,
-                      "offset": -15,
-                      "lineWidth": 2,
-                      "stroke": "#52C41A",
-                      "lineAppendWidth": 10,
-                      "endArrow": {
-                          "lineDash": [
-                              0
-                          ],
-                          "path": "M 0,0 L 8,4 L 7,0 L 8,-4 Z",
-                          "d": 0,
-                          "fill": "#52C41A",
-                          "stroke": "#52C41A"
-                      }
-                  },
-                  "edgeState:selected": {
-                      "radius": 6,
-                      "offset": -15,
-                      "lineWidth": 2,
-                      "stroke": "#52C41A",
-                      "lineAppendWidth": 10,
-                      "endArrow": {
-                          "lineDash": [
-                              0
-                          ],
-                          "path": "M 0,0 L 8,4 L 7,0 L 8,-4 Z",
-                          "d": 0,
-                          "fill": "#52C41A",
-                          "stroke": "#52C41A"
-                      }
-                  },
-                  "edgeState:hover": {
-                      "radius": 6,
-                      "offset": -15,
-                      "lineWidth": 2,
-                      "stroke": "#52C41A",
-                      "lineAppendWidth": 10,
-                      "endArrow": {
-                          "lineDash": [
-                              0
-                          ],
-                          "path": "M 0,0 L 8,4 L 7,0 L 8,-4 Z",
-                          "d": 0,
-                          "fill": "#52C41A",
-                          "stroke": "#52C41A"
-                      }
-                  }
-              },
-              "data": {
-                  "varType": "string",
-                  "coercive": true
-              },
-              "startPoint": {
-                  "x": 346.296875,
-                  "y": 459,
-                  "anchorIndex": 0
-              },
-              "endPoint": {
-                  "x": 634.5,
-                  "y": 321.27611940298505,
-                  "anchorIndex": 1
-              }
-          }
-      ],
-      "combos": []
-  })
+    graph.updateGraphData(this.graphData)
+    this.graph = graph
   }
 
   private _onClick() {
-    this.count++
+    this.graphData.nodes[0].x += 10
+    this.graph.updateGraphData(this.graphData)
   }
 
   static styles = css`
