@@ -1,6 +1,7 @@
 import { LOGIC_STATEMENT_EDGE, LOGIC_VARIABLE_EDGE } from '../consts';
 import { IIGroup, IModelConfig, IShapeOptions } from '../interfaces';
 import { IGroup, IShape, INode } from '@antv/g6';
+import { ItemEventName } from '../interfaces/event';
 
 function setStyle(item, nodeStyle) {
   item.attr(nodeStyle);
@@ -24,7 +25,9 @@ function getItemStyle(type, group, state = 'hover') {
   };
 }
 
-const events = {
+const events: {
+  [itemEvent in ItemEventName]: (...args: any[]) => void
+} = {
   /**
    * @description 锚点事件
    * 显示/隐藏锚点

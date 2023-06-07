@@ -21,6 +21,10 @@ export interface DefaultStyles{
 }
 
 declare module "@antv/g6" {
+  interface ModelConfig {
+    nodeWidth?: number;
+    nodeHeight?: number;
+  }
   interface IGroup {
     $getItem: (className: string) => IShape;
     getAllAnchors: (className: string) => IShape[];

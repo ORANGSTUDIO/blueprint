@@ -1,6 +1,7 @@
-import G6, { IGroup, INode, ModelConfig, NodeConfig, IShape, IG6GraphEvent, ShapeOptions } from '@antv/g6';
+import G6, { IGroup, INode, ModelConfig, NodeConfig, IShape, IG6GraphEvent, ShapeOptions, ShapeStyle } from '@antv/g6';
 import { AnchorBaseConfig_DTS, BlockNames_DTS } from './service';
 import { AnchorTag } from './anchor';
+import { WithRequiredProperty } from './util';
 
 export * from './anchor';
 
@@ -24,21 +25,22 @@ export type IIGroup = IGroup & {
   [key: string]: any;
 };
 
-export type IShapeOptions = ShapeOptions & Partial<{
-  calcNodeHeight: (cfg?: NodeConfig, group?: IGroup) => void;
-  assembleShape: (cfg?: INodeConfig, group?: IGroup) => void;
-  getShapeStyle: (cfg: IModelConfig) => void;
-  initAnchor: (cfg: IModelConfig, group: IIGroup) => void;
-  drawAnchor: (cfg: IModelConfig, group: IIGroup) => void;
+export interface IShapeOptions extends WithRequiredProperty<ShapeOptions, 'drawShape'> {
+  calcNodeHeight: (cfg?: ModelConfig, group?: IGroup) => void;
+  assembleShape: (cfg?: ModelConfig, group?: IGroup) => void;
+  getShapeStyle: (cfg: ModelConfig) => ShapeStyle;
+  initAnchor: (cfg: ModelConfig, group: IIGroup) => void;
+  drawAnchor: (cfg: ModelConfig, group: IIGroup) => void;
+  getAnchorPoints: (cfg?: ModelConfig) => number[][];
   getNodeAnchorBg: (options: {
-    cfg: IModelConfig;
+    cfg: ModelConfig;
     group: IIGroup;
     x: number;
     y: number;
     anchorIdx: number;
     position: number[];
   }) => IShape;
-}>;
+};
 
 export interface IModelConfig extends ModelConfig {
   nodeWidth: number;

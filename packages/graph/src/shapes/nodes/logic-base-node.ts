@@ -4,6 +4,7 @@ import { BlockNames_DTS } from '../../interfaces/service';
 import anchorEvent from '../../behaviors/anchor-event';
 import itemEvents from '../../behaviors/item-event';
 import { DEFAULT_STYLES } from '../../consts/';
+import { ItemEventName } from '../../interfaces/event';
 
 const { nodeStyles, anchorPointStyles } = DEFAULT_STYLES;
 
@@ -22,7 +23,7 @@ export default (G6: IG6) => {
   const nodeDefinition: IShapeOptions = {
     itemType,
     // 自定义方法
-    calcNodeHeight(cfg?: NodeConfig) {
+    calcNodeHeight(cfg?: ModelConfig) {
       if (!cfg) {
         return
       }
@@ -30,10 +31,14 @@ export default (G6: IG6) => {
       cfg.nodeHeight = 132;
     },
 
-    assembleShape(cfg?: INodeConfig, group?: IGroup) {
+    assembleShape(cfg?: ModelConfig, group?: IGroup) {
     },
 
-    getShapeStyle(cfg: IModelConfig) {
+    getShapeStyle(cfg: ModelConfig) {
+      if (!cfg.nodeWidth || !cfg.nodeHeight) {
+        throw new Error('invalid cfg')
+      }
+
       return getStyle.call(
         this,
         {
@@ -46,7 +51,7 @@ export default (G6: IG6) => {
       );
     },
 
-    initAnchor(cfg: IModelConfig, group: IIGroup) {
+    initAnchor(cfg: ModelConfig, group: IIGroup) {
       group.anchorShapes = [];
       group.showAnchor = () => {
         this.drawAnchor(cfg, group);
@@ -64,7 +69,7 @@ export default (G6: IG6) => {
       };
     },
 
-    drawAnchor(cfg: IModelConfig, group: IIGroup) {
+    drawAnchor(cfg: ModelConfig, group: IIGroup) {
       const attrs = group.getFirst().attr();
       const { anchorPointStyles } = attrs;
 
@@ -145,14 +150,21 @@ export default (G6: IG6) => {
 
     // 内部方法
     shapeType: 'logic-base',
-    draw(cfg?: IModelConfig, group?: IGroup) {
+    draw(cfg?: ModelConfig, group?: IGroup) {
       return this.drawShape(cfg, group);
     },
 
-    drawShape(cfg: IModelConfig, group: IIGroup) {
+    drawShape(cfg?: ModelConfig, group?: IGroup) {
+      if (!cfg) {
+        throw new Error('no cfg')
+      }
+
+      if (!group) {
+        throw new Error('no group')
+      }
       this.calcNodeHeight(cfg, group);
 
-      const attrs = this.getShapeStyle(cfg, group);
+      const attrs = this.getShapeStyle(cfg);
       const keyShape = group.addShape('rect', {
         className: `${this.shapeType}-shape`,
         name: `${this.shapeType}-shape`,
@@ -164,7 +176,7 @@ export default (G6: IG6) => {
       this.assembleShape(cfg, group);
 
       group.$getItem = (className) => {
-        return group.get('children').find((item) => item.get('className') === className);
+        return group.get('children').find((item: Item) => item.get('className') === className);
       };
 
       this.initAnchor(cfg, group);
@@ -176,7 +188,7 @@ export default (G6: IG6) => {
     // update: null,
 
     setState(name?: string, value?: string | boolean, item?: Item) {
-      const buildInEvents: string[] = [
+      const buildInEvents: ItemEventName[] = [
         'anchorShow',
         'anchorActived',
         'nodeState',
@@ -184,9 +196,9 @@ export default (G6: IG6) => {
         'nodeState:selected',
         'nodeState:matched', // 搜索命中样式
         'nodeState:hover',
-        'nodeOnDragStart',
-        'nodeOnDrag',
-        'nodeOnDragEnd',
+        // 'nodeOnDragStart',
+        // 'nodeOnDrag',
+        // 'nodeOnDragEnd',
       ];
 
       if (!item) {
@@ -199,12 +211,12 @@ export default (G6: IG6) => {
         return;
       }
 
-      if (name && buildInEvents.includes(name)) {
+      if (name && buildInEvents.includes(name as ItemEventName)) {
         // 内部this绑定到了当前item实例
-        if (!itemEvents[name]) {
+        if (!itemEvents[name as ItemEventName]) {
           console.warn('找不到事件方法：', name);
         }
-        itemEvents[name].call(this, value, group);
+        itemEvents[name as ItemEventName].call(this, value, group);
       } else if (this.stateApplying) {
         this.stateApplying.call(this, name, value, item);
       } else {
@@ -214,7 +226,7 @@ export default (G6: IG6) => {
       }
     },
 
-    getAnchorPoints(cfg?: IModelConfig): any[] {
+    getAnchorPoints(cfg?: ModelConfig): any[] {
       return [
         [0, 0],
         [0, 0.5],
@@ -227,5 +239,5 @@ export default (G6: IG6) => {
     },
   };
 
-  G6.registerNode(itemType, nodeDefinition as ShapeOptions, 'single-node');
+  G6.registerNode(itemType, nodeDefinition, 'single-node');
 };
